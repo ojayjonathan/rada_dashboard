@@ -1,0 +1,21 @@
+.profile-thumbnail {
+    height: 50px !important;
+    width: 50px !important;
+    margin-right: 1rem !important;
+}
+.profile-thumbnail img {
+    height: 50px !important;
+    width: 50px !important;
+}
+.chat-card  {
+    line-height: 1;
+}
+.chat-items {
+    max-height: 300px;
+    overflow-y: auto;
+}
+.chat-items .material-icons {
+    color: var(--dark-gray);
+   
+}
+

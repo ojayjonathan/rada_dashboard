@@ -1,0 +1,11 @@
+.content-category {
+    background-color: #eeeeee;
+    padding: 5px 10px;
+    display: inline-block;
+    border-radius: 999px;
+ 
+}
+.content-image{
+    height: 250px;
+    overflow: hidden;
+}

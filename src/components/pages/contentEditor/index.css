@@ -1,0 +1,11 @@
+.add-new-post__editor .ql-container,
+.add-new-post__editor .ql-editor {
+  min-height: 300px;
+}
+.custom-control-label {
+  color: rgb(90, 97, 105);
+}
+.custom-control{
+  display: flex;
+  align-items: center;
+}

@@ -1,0 +1,7 @@
+.schedule .calender{
+  font-size: 24px;
+  margin-right: 1rem;
+}
+.schedule i {
+    color: var(--dark-gray);
+}
