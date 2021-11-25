@@ -2,7 +2,6 @@ import React from 'react'
 import Card from '../card'
 import img from "../../assets/images/image 3.png"
 import "./index.css"
-import { Link } from 'react-router-dom'
 
 function ChatItem({ item }) {
     return (

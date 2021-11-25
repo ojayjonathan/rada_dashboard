@@ -25,3 +25,31 @@ export const storeToLocalstorage = (key, value) => {
     return "";
   }
 };
+
+export const generateChartData = (
+  labels = [],
+  data = [],
+  backgroundColor,
+  fill = false
+) => {
+  const change = 0.6 / data.length;
+  let opacity = 0.9;
+  // generate background colors for piechart
+  if (!backgroundColor) {
+    backgroundColor = [];
+    for (let i = 0; i < data.length; ++i) {
+      backgroundColor.push(`rgba(45,203,126,${opacity - change * i})`);
+    }
+  }
+
+  return {
+    labels: labels,
+    datasets: [
+      {
+        data: data,
+        backgroundColor: backgroundColor,
+        fill: fill,
+      },
+    ],
+  };
+};

@@ -21,7 +21,7 @@ export default function ContentEditor() {
         category: location.state.category,
       });
     }
-  }, []);
+  }, [location]);
   return (
     <Layout>
       <div className="container">

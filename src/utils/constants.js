@@ -31,3 +31,8 @@ export const sidebarItems = [
 ];
 
 export const IP_ADDRESS = "http://radaegerton.ddns.net/api/v1/";
+
+export const USER_ROLES = {
+  admin: "ADMIN",
+  counsellor: "COUNSELLOR",
+};
