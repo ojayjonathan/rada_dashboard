@@ -7,6 +7,7 @@ import {
   getCounsellor,
   updateSchedule,
 } from "../../utils/services/role.services";
+import { snackBarClasses } from "../snackar";
 
 function ScheduleItem({ item, openModel }) {
   return (
@@ -29,7 +30,7 @@ function ScheduleItem({ item, openModel }) {
 }
 
 function Schedule() {
-  const { user } = React.useContext(DashboardContext);
+  const { user, showSnackBar } = React.useContext(DashboardContext);
   const [schedule, setSchedule] = React.useState({});
   const [openEditModal, open] = useState(false);
   const from_ = React.useRef();
@@ -60,7 +61,14 @@ function Schedule() {
     setSchedule(schedule_);
     open(false);
     const res = await updateSchedule(Object.values(schedule_));
-    //TODO - show success message
+    if (res.schedule) {
+      showSnackBar(
+        res.schedule.message || res.schedule.msg,
+        snackBarClasses.success
+      );
+    } else {
+      showSnackBar(res.message, snackBarClasses.danger);
+    }
   };
 
   return (

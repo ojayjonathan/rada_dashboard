@@ -63,21 +63,27 @@ export const updateSchedule = async (schedule = []) => {
   }
 };
 
-// {
-// "schedule":[
-// 	{
-// 		"day":"monday",
-// 		"active":{
-// 			"from":"0800H",
-// 			"to":"1800H"
-// 		}
-// 	},
-// 			{
-// 		"day":"tuesday",
-// 		"active":{
-// 			"from":"0800H",
-// 			"to":"1800H"
-// 		}
-// 	}
-// ]
-// }
+export const getCounsellors = async (peer = false) => {
+  const url = `${IP_ADDRESS}admin/user/${
+    peer ? "peercounsellors/" : "counsellors"
+  }`;
+  const result = await fetch(url, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+      Authorization: getAuthToken(),
+    },
+  }).catch((e) => {
+    return e;
+  });
+  const data = await result.json();
+  if (result.ok) {
+    return {
+      counsellors: data.counsellors,
+    };
+  } else {
+    return { message: data.message, status: result.status };
+  }
+};
+
+// counseling/forums

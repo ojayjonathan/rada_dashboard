@@ -11,6 +11,12 @@ import ContentEditor from "../pages/contentEditor";
 import Logout from "../pages/logout";
 import { useHistory } from "react-router";
 import { getuserRoles } from "../../utils/services/role.services";
+import Layout from "../layout";
+import Counsellors from "../pages/counselors";
+import PeerCounsellors from "../pages/peerCounsellors";
+import { getForums } from "../../utils/services/counselling.services";
+import SnackBar from "../snackar";
+import PageNotFound from "../pages/erro/404";
 
 export const DashboardContext = React.createContext();
 
@@ -19,6 +25,7 @@ function ProtectedRoutes() {
   const [state, setState] = React.useState({
     user: {},
     roles: [],
+    forums: [],
   });
   if (!getAuthToken()) {
     history.push(APP_ROUTES.login);
@@ -26,12 +33,17 @@ function ProtectedRoutes() {
 
   React.useEffect(() => {
     const init = async () => {
+      let forums = [];
       const profile = await getuserProfile();
+      const forumsRes = await getForums();
+      if (forumsRes.forums) {
+        forums = forumsRes.forums;
+      }
       if (profile.user) {
         const res = await getuserRoles(profile.user._id);
         if (res.roles) {
           setState((state) => {
-            return { ...state, user: profile.user, roles: res.roles };
+            return { ...state, user: profile.user, roles: res.roles, forums };
           });
         }
       }
@@ -39,21 +51,46 @@ function ProtectedRoutes() {
     init();
   }, []);
 
+  const [snackbar, setSnackbar] = React.useState({});
+  const showSnackBar = (message, className, duration = 5000) => {
+    setSnackbar({
+      message: message,
+      className: className,
+      duration: duration,
+    });
+  };
+
   return (
     <DashboardContext.Provider
       value={{
         ...state,
+        showSnackBar,
       }}
     >
-      <Switch>
-        <Route exact path={APP_ROUTES.home} render={() => <Home />} />
-        <Route
-          path={APP_ROUTES.createContent}
-          render={() => <ContentEditor />}
-        />
-        <Route path={APP_ROUTES.content} render={() => <Content />} />
-        <Route path={APP_ROUTES.logout} render={() => <Logout />} />
-      </Switch>
+      <Layout>
+        <SnackBar snackbar={snackbar} />
+        <Switch>
+          <Route exact path={APP_ROUTES.home} render={() => <Home />} />
+          <Route
+            exact
+            path={APP_ROUTES.createContent}
+            render={() => <ContentEditor />}
+          />
+          <Route exact path={APP_ROUTES.content} render={() => <Content />} />
+          <Route exact path={APP_ROUTES.logout} render={() => <Logout />} />
+          <Route
+            exact
+            path={APP_ROUTES.counsellors}
+            render={() => <Counsellors />}
+          />
+          <Route
+            exact
+            path={APP_ROUTES.peerCounsellors}
+            render={() => <PeerCounsellors />}
+          />
+          <Route path="/*" render={() => <PageNotFound />} />
+        </Switch>
+      </Layout>
     </DashboardContext.Provider>
   );
 }

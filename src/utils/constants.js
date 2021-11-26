@@ -5,6 +5,8 @@ export const APP_ROUTES = {
   createContent: "/dashboard/content/create/",
   logout: "/dashboard/logout/",
   login: "/dashboard/login/",
+  counsellors: "/dashboard/counselors/",
+  peerCounsellors: "/dashboard/peer-counselors/",
 };
 
 export const sidebarItems = [
@@ -23,6 +25,17 @@ export const sidebarItems = [
     to: APP_ROUTES.createContent,
     icon: "note_add",
   },
+
+  {
+    title: "consellors",
+    to: APP_ROUTES.counsellors,
+    icon: "group",
+  },
+  {
+    title: "peer counsellors",
+    to: APP_ROUTES.peerCounsellors,
+    icon: "group",
+  },
   {
     title: "Logout",
     to: APP_ROUTES.logout,
@@ -36,3 +49,5 @@ export const USER_ROLES = {
   admin: "ADMIN",
   counsellor: "COUNSELLOR",
 };
+
+export const IMAGE_URL = "http://radaegerton.ddns.net/api/v1/uploads/";

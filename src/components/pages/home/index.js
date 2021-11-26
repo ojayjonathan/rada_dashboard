@@ -7,11 +7,11 @@ import SmallStats from "../../charts/smallStat";
 import Chats from "../../chats";
 import { DashboardContext } from "../../dashboard";
 import Forums from "../../forums";
-import Layout from "../../layout";
 import Schedule from "../../schedule";
 
 function Home() {
   const { user, roles } = React.useContext(DashboardContext);
+  
   const [analyticsData, setData] = React.useState({
     gender: {},
   });
@@ -25,6 +25,7 @@ function Home() {
 
   React.useEffect(() => {
     const init = async () => {
+     
       const analytics = await getuserMetrics();
       if (analytics.analytics) {
         setData((analyticsData) => {
@@ -43,37 +44,35 @@ function Home() {
   }, []);
 
   return (
-    <Layout>
-      <div className="container ">
-        <h3 className="my-5">Welcome back, {user.name}</h3>
-        <div className="row">
-          <div className="col-12 col-sm-4  mb-4">
-            <PieChart data={data} title="Age Comparison" />
-          </div>
-          <div className="col-12 col-sm-4 mb-4">
-            <PieChart data={analyticsData.gender} title="Gender" />
-          </div>
-          <div className="col-12 col-sm-4 mb-4">
-            <SmallStats data={SmallStatData} label="User Online" value="30" />
-          </div>
+    <div className="container mx-auto">
+      <h3 className="my-5">Welcome back, {user.name}</h3>
+      <div className="row">
+        <div className="col-12 col-sm-4  mb-4">
+          <PieChart data={data} title="Age Comparison" />
         </div>
-        {roles.includes(USER_ROLES.counsellor) && (
-          <div className="row mt-5">
-            <div className="col-12 col-sm-6 col-lg-5 mb-4">
-              <Schedule />
-            </div>
-            <div className="col-12 col-sm-6 col-lg-7 mb-4">
-              <Chats />
-            </div>
-          </div>
-        )}
-        <div className="row mt-5">
-          <div className="col-12 col-sm-6 col-lg-5 mb-4">
-            <Forums />
-          </div>
+        <div className="col-12 col-sm-4 mb-4">
+          <PieChart data={analyticsData.gender} title="Gender" />
+        </div>
+        <div className="col-12 col-sm-4 mb-4">
+          <SmallStats data={SmallStatData} label="User Online" value="30" />
         </div>
       </div>
-    </Layout>
+      {roles.includes(USER_ROLES.counsellor) && (
+        <div className="row mt-5">
+          <div className="col-12 col-sm-6 col-lg-5 mb-4">
+            <Schedule />
+          </div>
+          <div className="col-12 col-sm-6 col-lg-7 mb-4">
+            <Chats />
+          </div>
+        </div>
+      )}
+      <div className="row mt-5">
+        <div className="col-12 col-sm-6 col-lg-5 mb-4">
+          <Forums />
+        </div>
+      </div>
+    </div>
   );
 }
 

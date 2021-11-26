@@ -1,14 +1,13 @@
 import React from "react";
 import Layout from "../../layout";
 import PageTitle from "../../pageTitle";
-import img from "../../../assets/images/image 3.png";
+import img from "../../../assets/images/image.webp";
 import "./index.css";
 import { Link } from "react-router-dom";
-import { useEffect, useRef } from "react/cjs/react.development";
 
 const ContentCard = ({ item }) => {
-  const ref = useRef();
-  useEffect(() => {
+  const ref = React.useRef();
+  React.useEffect(() => {
     ref.current.innerHTML = item.content;
   });
   return (
@@ -66,17 +65,15 @@ export default function Content() {
     },
   ];
   return (
-    <Layout>
-      <div className="container">
-        <PageTitle title="Content" sutitle="content" />
-        <div className="d-flex flex-wrap">
-          {blogItems.map((item) => (
-            <div className="col-12 col-md-6 col-lg-4 mb-3 px-2">
-              <ContentCard item={item} />
-            </div>
-          ))}
-        </div>
+    <div className="container">
+      <PageTitle title="Content" sutitle="content" />
+      <div className="d-flex flex-wrap">
+        {blogItems.map((item) => (
+          <div className="col-12 col-md-6 col-lg-4 mb-3 px-2">
+            <ContentCard item={item} />
+          </div>
+        ))}
       </div>
-    </Layout>
+    </div>
   );
 }

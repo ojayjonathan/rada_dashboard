@@ -96,3 +96,12 @@ a {
   background-color: transparent;
   color: var(--primary);
 }
+.fade-out {
+  animation: fadeOut 0.3s ease-out;
+}
+
+@keyframes fadeOut {
+  100% {
+    opacity: 0;
+  }
+}

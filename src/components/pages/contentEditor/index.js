@@ -23,7 +23,7 @@ export default function ContentEditor() {
     }
   }, [location]);
   return (
-    <Layout>
+  
       <div className="container">
         <PageTitle
           title={location.state ? "Edit Content" : "Create Content"}
@@ -60,7 +60,7 @@ export default function ContentEditor() {
                   />
                   <label
                     className="custom-control-label mx-2"
-                    htmlFor="category3"
+                    htmlhtmlFor="category3"
                   >
                     Development
                   </label>
@@ -74,7 +74,7 @@ export default function ContentEditor() {
                   />
                   <label
                     className="custom-control-label mx-2"
-                    htmlFor="category3"
+                    htmlhtmlFor="category3"
                   >
                     Hiv/Aids
                   </label>
@@ -87,7 +87,7 @@ export default function ContentEditor() {
                   />
                   <label
                     className="custom-control-label mx-2"
-                    htmlFor="category3"
+                    htmlhtmlFor="category3"
                   >
                     Development
                   </label>
@@ -123,6 +123,6 @@ export default function ContentEditor() {
           </div>
         </form>
       </div>
-    </Layout>
+    
   );
 }
