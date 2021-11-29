@@ -7,6 +7,7 @@ export const APP_ROUTES = {
   login: "/dashboard/login/",
   counsellors: "/dashboard/counselors/",
   peerCounsellors: "/dashboard/peer-counselors/",
+  contact: "/dashboard/contact/",
 };
 
 export const sidebarItems = [
@@ -27,14 +28,19 @@ export const sidebarItems = [
   },
 
   {
-    title: "consellors",
+    title: "Consellors",
     to: APP_ROUTES.counsellors,
     icon: "group",
   },
   {
-    title: "peer counsellors",
+    title: "Peer counsellors",
     to: APP_ROUTES.peerCounsellors,
     icon: "group",
+  },
+  {
+    title: "Contact",
+    to: APP_ROUTES.contact,
+    icon: "contact_page",
   },
   {
     title: "Logout",
@@ -43,11 +49,11 @@ export const sidebarItems = [
   },
 ];
 
-export const IP_ADDRESS = "http://radaegerton.ddns.net/api/v1/";
-
 export const USER_ROLES = {
   admin: "ADMIN",
   counsellor: "COUNSELLOR",
 };
 
-export const IMAGE_URL = "http://radaegerton.ddns.net/api/v1/uploads/";
+export const BASE_URL = "http://radaegerton.ddns.net/";
+export const ADMIN_URL = "http://radaegerton.ddns.net/api/v1/admin/";
+export const IMAGE_URL = `${BASE_URL}api/v1/uploads/`;

@@ -6,6 +6,8 @@ import { DashboardContext } from "../dashboard";
 import { createForums } from "../../utils/services/counselling.services";
 import { IMAGE_URL } from "../../utils/constants";
 import { snackBarClasses } from "../snackar";
+import ForumSkeleton from "./skeleton.forum";
+import "./index.css";
 
 const ForumContext = React.createContext();
 function ForumItem({ item }) {
@@ -13,9 +15,9 @@ function ForumItem({ item }) {
   return (
     <div
       style={{ lineHeight: "normal" }}
-      className="mb-1  d-flex justify-content-between align-items-center"
+      className="my-2  d-flex justify-content-between align-items-center"
     >
-      <div className="profile-thumbnail mb-4">
+      <div className="forum-thumbnail me-2">
         <img src={IMAGE_URL + item.image} alt="user profile" />
       </div>
       <div className="flex-grow-1">
@@ -35,7 +37,8 @@ function ForumItem({ item }) {
 }
 
 const Forum = () => {
-  const { forums, showSnackBar } = React.useContext(DashboardContext);
+  const { isLoading, forums, showSnackBar } =
+    React.useContext(DashboardContext);
   const [isEditing, setEdit] = React.useState(false);
   const [selectedForum, setSelectedForum] = React.useState({
     title: "",
@@ -72,69 +75,73 @@ const Forum = () => {
   const fileRef = React.useRef();
   return (
     <ForumContext.Provider value={{ edit }}>
-      <Card title="Forums">
-        {forums.map((forum, i) => (
-          <ForumItem item={forum} key={i} />
-        ))}
-        <div>
-          <button
-            onClick={() => setEdit(true)}
-            className="btn btn-primary fs-6 py-1"
+        {isLoading ? (
+          <ForumSkeleton />
+        ) : (
+          <Card title="Forums">
+            {forums.map((forum, i) => (
+              <ForumItem item={forum} key={i} />
+            ))}
+            <div>
+              <button
+                onClick={() => setEdit(true)}
+                className="btn btn-primary fs-6 py-1"
+              >
+                Add New
+              </button>
+            </div>
+          </Card>
+        )}
+        {isEditing && (
+          <Modal
+            title="Create Forum"
+            closeModal={() => setEdit(false)}
+            confirm={handleSubmit}
           >
-            Add New
-          </button>
-        </div>
-      </Card>
-      {isEditing && (
-        <Modal
-          title="Create Forum"
-          closeModal={() => setEdit(false)}
-          confirm={handleSubmit}
-        >
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label htmlFor="name" className="form-label">
-                Forum Name
-              </label>
-              <input
-                onChange={handleChange}
-                type="text"
-                className="form-control"
-                id="title"
-                value={selectedForum.title}
-                placeholder="forum name"
-                name="title"
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="description" className="form-label">
-                Description
-              </label>
-              <textarea
-                onChange={handleChange}
-                name="description"
-                value={selectedForum.description}
-                className="form-control"
-                id="description"
-                rows="3"
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="file" className="form-label">
-                Photo
-              </label>
-              <input
-                ref={fileRef}
-                type="file"
-                className="form-control"
-                id="file"
-                name="image"
-                placeholder="forum name"
-              />
-            </div>
-          </form>
-        </Modal>
-      )}
+            <form onSubmit={handleSubmit}>
+              <div className="mb-3">
+                <label htmlFor="name" className="form-label">
+                  Forum Name
+                </label>
+                <input
+                  onChange={handleChange}
+                  type="text"
+                  className="form-control"
+                  id="title"
+                  value={selectedForum.title}
+                  placeholder="forum name"
+                  name="title"
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="description" className="form-label">
+                  Description
+                </label>
+                <textarea
+                  onChange={handleChange}
+                  name="description"
+                  value={selectedForum.description}
+                  className="form-control"
+                  id="description"
+                  rows="3"
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="file" className="form-label">
+                  Photo
+                </label>
+                <input
+                  ref={fileRef}
+                  type="file"
+                  className="form-control"
+                  id="file"
+                  name="image"
+                  placeholder="forum name"
+                />
+              </div>
+            </form>
+          </Modal>
+        )}
     </ForumContext.Provider>
   );
 };

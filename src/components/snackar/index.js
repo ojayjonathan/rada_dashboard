@@ -34,7 +34,7 @@ function SnackBar({ snackbar }) {
     };
   }, [snackbar]);
   return (
-    <div className={`fixed-top ${state}`}>
+    <div className={`fixed-top ${state}`} style={{ zIndex: "10000" }}>
       <div className={classes} role="alert">
         <p className="my-2">{snackbar.message}</p>
       </div>

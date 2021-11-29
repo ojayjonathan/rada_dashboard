@@ -16,7 +16,8 @@ import Counsellors from "../pages/counselors";
 import PeerCounsellors from "../pages/peerCounsellors";
 import { getForums } from "../../utils/services/counselling.services";
 import SnackBar from "../snackar";
-import PageNotFound from "../pages/erro/404";
+import PageNotFound from "../pages/error/404";
+import Contact from "../pages/contact";
 
 export const DashboardContext = React.createContext();
 
@@ -26,6 +27,7 @@ function ProtectedRoutes() {
     user: {},
     roles: [],
     forums: [],
+    isLoading: true,
   });
   if (!getAuthToken()) {
     history.push(APP_ROUTES.login);
@@ -43,7 +45,13 @@ function ProtectedRoutes() {
         const res = await getuserRoles(profile.user._id);
         if (res.roles) {
           setState((state) => {
-            return { ...state, user: profile.user, roles: res.roles, forums };
+            return {
+              ...state,
+              user: profile.user,
+              roles: res.roles,
+              forums,
+              isLoading: false,
+            };
           });
         }
       }
@@ -88,6 +96,7 @@ function ProtectedRoutes() {
             path={APP_ROUTES.peerCounsellors}
             render={() => <PeerCounsellors />}
           />
+          <Route exact path={APP_ROUTES.contact} render={() => <Contact />} />
           <Route path="/*" render={() => <PageNotFound />} />
         </Switch>
       </Layout>

@@ -4,7 +4,7 @@ import { APP_ROUTES } from "../../../utils/constants";
 
 function PageNotFound() {
   return (
-    <div className="d-flex flex-column justify-content-center h-100 align-items-center">
+    <div className="container mx-auto d-flex flex-column justify-content-center h-100 align-items-center">
       <div>
         <svg
           xmlns="http://www.w3.org/2000/svg"

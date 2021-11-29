@@ -1,8 +1,8 @@
-import { IP_ADDRESS } from "../constants";
+import { ADMIN_URL } from "../constants";
 import { getAuthToken } from "./user.services";
 
 export const getuserRoles = async (userId) => {
-  const result = await fetch(`${IP_ADDRESS}admin/role/${userId}`, {
+  const result = await fetch(`${ADMIN_URL}role/${userId}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -23,8 +23,8 @@ export const getuserRoles = async (userId) => {
   }
 };
 
-export const getCounsellor = async (userId) => {
-  const result = await fetch(`${IP_ADDRESS}admin/user/counsellor/${userId}`, {
+export const getCounsellor = async () => {
+  const result = await fetch(`${ADMIN_URL}user/counsellor`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -43,7 +43,7 @@ export const getCounsellor = async (userId) => {
   }
 };
 export const updateSchedule = async (schedule = []) => {
-  const result = await fetch(`${IP_ADDRESS}admin/user/counsellor/schedule`, {
+  const result = await fetch(`${ADMIN_URL}user/counsellor/schedule`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -64,9 +64,7 @@ export const updateSchedule = async (schedule = []) => {
 };
 
 export const getCounsellors = async (peer = false) => {
-  const url = `${IP_ADDRESS}admin/user/${
-    peer ? "peercounsellors/" : "counsellors"
-  }`;
+  const url = `${ADMIN_URL}user/${peer ? "peercounsellors/" : "counsellors"}`;
   const result = await fetch(url, {
     method: "GET",
     headers: {
@@ -86,4 +84,21 @@ export const getCounsellors = async (peer = false) => {
   }
 };
 
-// counseling/forums
+export const getCampuses = async () => {
+  const result = await fetch(`${ADMIN_URL}university/campus`, {
+    method: "GET",
+    headers: {
+      Authorization: getAuthToken(),
+    },
+  }).catch((e) => {
+    return e;
+  });
+  const data = await result.json();
+  if (result.ok) {
+    return {
+      campuses: data.campuses,
+    };
+  } else {
+    return { message: data.message, status: result.status };
+  }
+};

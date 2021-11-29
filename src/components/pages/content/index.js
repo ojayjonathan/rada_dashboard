@@ -67,7 +67,7 @@ export default function Content() {
   return (
     <div className="container">
       <PageTitle title="Content" sutitle="content" />
-      <div className="d-flex flex-wrap">
+      <div className="row">
         {blogItems.map((item) => (
           <div className="col-12 col-md-6 col-lg-4 mb-3 px-2">
             <ContentCard item={item} />

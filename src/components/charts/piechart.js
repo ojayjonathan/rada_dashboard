@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Chart, registerables } from "chart.js";
+import CardSkeleton from "../skeleton/skeleton.chart.js";
 Chart.register(...registerables);
 /**
  * 
@@ -20,8 +21,7 @@ Chart.register(...registerables);
  * @returns 
  */
 export default function PieChart({ data, title }) {
-    console.log(JSON.stringify(data))
-    useEffect(() => {
+  useEffect(() => {
     const config = {
       type: "pie",
       data: data,
@@ -43,9 +43,12 @@ export default function PieChart({ data, title }) {
   const canvaRef = useRef();
   return (
     <div className="card">
-      <div className="card-header">
-        <h6 className="mb-0 text-center text-capitalize">{title}</h6>
-      </div>
+      {!data && <CardSkeleton centerTitle={true} />}
+      {data && (
+        <div className="card-header">
+          <h6 className="mb-0 text-center text-capitalize">{title}</h6>
+        </div>
+      )}
       <div className="card-body">
         <canvas height={canvasHeight} ref={canvaRef} />
       </div>

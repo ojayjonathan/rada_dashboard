@@ -1,8 +1,8 @@
-import { IP_ADDRESS } from "../constants";
+import { ADMIN_URL } from "../constants";
 import { getItemFromLocalStorage, storeToLocalstorage } from "../utils";
 
 export const login = async (credential) => {
-  const result = await fetch(IP_ADDRESS + "admin/user/login", {
+  const result = await fetch(ADMIN_URL + "user/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -36,7 +36,28 @@ export const getAuthToken = () => {
 };
 
 export const getuserProfile = async () => {
-  const result = await fetch(IP_ADDRESS + "admin/user/profile", {
+  const result = await fetch(ADMIN_URL + "user/profile", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+      Authorization: getAuthToken(),
+    },
+  }).catch((e) => {
+    return e;
+  });
+
+  const data = await result.json();
+  if (result.ok) {
+    return {
+      user: data.user,
+    };
+  } else {
+    return { message: data.message, status: result.status };
+  }
+};
+
+export const queryUser = async (email) => {
+  const result = await fetch(`${ADMIN_URL}user/queryUserInfo/${email}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json;charset=utf-8",
@@ -57,7 +78,7 @@ export const getuserProfile = async () => {
 };
 
 export const getuserMetrics = async () => {
-  const result = await fetch(IP_ADDRESS + "admin/user/metrics", {
+  const result = await fetch(ADMIN_URL + "user/metrics", {
     method: "GET",
     headers: {
       "Content-Type": "application/json;charset=utf-8",

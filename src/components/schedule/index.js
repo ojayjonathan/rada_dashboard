@@ -39,7 +39,7 @@ function Schedule() {
   React.useEffect(() => {
     const init = async () => {
       //TODO - remove hardcorded value
-      const res = await getCounsellor(1);
+      const res = await getCounsellor();
       if (res.counsellor) {
         const scheduleObj = {};
         res.counsellor.Schedule.map((item) => (scheduleObj[item.day] = item));
