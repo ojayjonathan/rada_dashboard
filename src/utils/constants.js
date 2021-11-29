@@ -8,6 +8,7 @@ export const APP_ROUTES = {
   counsellors: "/dashboard/counselors/",
   peerCounsellors: "/dashboard/peer-counselors/",
   contact: "/dashboard/contact/",
+  map: "/dashboard/map",
 };
 
 export const sidebarItems = [
@@ -42,6 +43,7 @@ export const sidebarItems = [
     to: APP_ROUTES.contact,
     icon: "contact_page",
   },
+  { title: "Location", to: APP_ROUTES.map, icon: "location_on" },
   {
     title: "Logout",
     to: APP_ROUTES.logout,

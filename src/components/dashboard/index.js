@@ -18,6 +18,7 @@ import { getForums } from "../../utils/services/counselling.services";
 import SnackBar from "../snackar";
 import PageNotFound from "../pages/error/404";
 import Contact from "../pages/contact";
+import MapComponent from "../pages/maps";
 
 export const DashboardContext = React.createContext();
 
@@ -97,6 +98,7 @@ function ProtectedRoutes() {
             render={() => <PeerCounsellors />}
           />
           <Route exact path={APP_ROUTES.contact} render={() => <Contact />} />
+          <Route path={APP_ROUTES.map} render={() => <MapComponent />} />
           <Route path="/*" render={() => <PageNotFound />} />
         </Switch>
       </Layout>
