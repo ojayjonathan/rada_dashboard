@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import Card from "../card";
-import img from "../../assets/images/image 3.png";
 import Modal from "../modal/index";
 import { DashboardContext } from "../dashboard";
 import { createForums } from "../../utils/services/counselling.services";

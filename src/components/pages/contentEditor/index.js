@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router";
-import Layout from "../../layout";
 import PageTitle from "../../pageTitle";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";

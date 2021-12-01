@@ -1,7 +1,6 @@
 import React from "react";
 import {
   GoogleMap,
-  InfoBox,
   Marker,
   useJsApiLoader,
 } from "@react-google-maps/api";
@@ -106,7 +105,10 @@ function MyComponent() {
         <div className="mx-auto  col-12 col-md-8 col-lg-6">
           <div className="input-group">
             <input placeholder="Select location" className="form-control" />
-            <span className="material-icons fs-3 input-group-text" id="basic-addon2">
+            <span
+              className="material-icons fs-3 input-group-text"
+              id="basic-addon2"
+            >
               location_on
             </span>
           </div>

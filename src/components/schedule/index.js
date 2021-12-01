@@ -9,19 +9,19 @@ import {
 } from "../../utils/services/role.services";
 import { snackBarClasses } from "../snackar";
 
-function ScheduleItem({ item, openModel }) {
+function ScheduleItem({ item, setEditModel }) {
   return (
     <div className="schedule my-2 d-flex justify-content-between align-items-center">
       <div className="d-flex justify-content-between align-items-center">
         <i className="material-icons calender">event_note</i>
         <div>
           <h6 className="my-0 text-capitalize">{item.day}</h6>
-          <small className="text-muted">{`${item.active.from} - ${item.active.from}`}</small>
+          <small className="text-muted">{`${item.active.from} - ${item.active.to}`}</small>
         </div>
       </div>
       <i
         className="material-icons text-primary btn fs-3"
-        onClick={() => openModel(item)}
+        onClick={() => setEditModel(item)}
       >
         edit
       </i>
@@ -30,15 +30,14 @@ function ScheduleItem({ item, openModel }) {
 }
 
 function Schedule() {
-  const { user, showSnackBar } = React.useContext(DashboardContext);
+  const { showSnackBar } = React.useContext(DashboardContext);
   const [schedule, setSchedule] = React.useState({});
-  const [openEditModal, open] = useState(false);
+  const [setEditModal, setEdit] = useState(false);
   const from_ = React.useRef();
   const to_ = React.useRef();
   const day_ = React.useRef();
   React.useEffect(() => {
     const init = async () => {
-      //TODO - remove hardcorded value
       const res = await getCounsellor();
       if (res.counsellor) {
         const scheduleObj = {};
@@ -48,7 +47,7 @@ function Schedule() {
     };
     init();
   }, []);
-
+  const [selectedItem, setSelectedItem] = React.useState({});
   const update = async () => {
     const newItem = {
       day: day_.current.value,
@@ -59,7 +58,7 @@ function Schedule() {
     };
     let schedule_ = { ...schedule, [newItem.day]: newItem };
     setSchedule(schedule_);
-    open(false);
+    setEdit(false);
     const res = await updateSchedule(Object.values(schedule_));
     if (res.schedule) {
       showSnackBar(
@@ -74,26 +73,37 @@ function Schedule() {
   return (
     <Card title="Schedule">
       {Object.values(schedule).map((item, i) => (
-        <ScheduleItem item={item} key={i} openModel={() => open(true)} />
+        <ScheduleItem
+          item={item}
+          key={i}
+          setEditModel={() => {
+            setEdit(true);
+            setSelectedItem(item);
+          }}
+        />
       ))}
       <button
         className="btn btn-primary d-flex align-items-center py-0"
-        onClick={() => open(true)}
+        onClick={() => setEdit(true)}
       >
         Add
         <span className="material-icons">add</span>
       </button>
-      {openEditModal && (
+      {setEditModal && (
         <Modal
           title="Update schedule"
-          closeModal={() => open(false)}
+          closeModal={() => setEdit(false)}
           confirm={update}
         >
           <div className="row my-3">
             <div className="my-3">
               <select className="form-select" ref={day_}>
                 {days.map((day) => (
-                  <option key={day} value={day}>
+                  <option
+                    selected={day === selectedItem.day}
+                    key={day}
+                    value={day}
+                  >
                     {day}
                   </option>
                 ))}
@@ -102,7 +112,13 @@ function Schedule() {
             <div className="col-6">
               <select className="form-select" ref={from_}>
                 {timeRange().map((time) => (
-                  <option key={time} value={time}>
+                  <option
+                    selected={
+                      selectedItem.active && selectedItem.active.from === time
+                    }
+                    key={time}
+                    value={time}
+                  >
                     {time}
                   </option>
                 ))}
@@ -111,7 +127,13 @@ function Schedule() {
             <div className="col-6">
               <select className="form-select" ref={to_}>
                 {timeRange().map((time) => (
-                  <option key={time} value={time}>
+                  <option
+                    selected={
+                      selectedItem.active && selectedItem.active.to === time
+                    }
+                    key={time}
+                    value={time}
+                  >
                     {time}
                   </option>
                 ))}

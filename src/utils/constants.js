@@ -1,14 +1,17 @@
 export const APP_ROUTES = {
   home: "/",
-  content: "/dashboard/content/",
-  updateContent: "/dashboard/content/update",
-  createContent: "/dashboard/content/create/",
-  logout: "/dashboard/logout/",
-  login: "/dashboard/login/",
-  counsellors: "/dashboard/counselors/",
-  peerCounsellors: "/dashboard/peer-counselors/",
-  contact: "/dashboard/contact/",
-  map: "/dashboard/map",
+  content: "/content/",
+  updateContent: "/content/update",
+  createContent: "/content/create/",
+  logout: "/logout/",
+  login: "/login/",
+  counsellors: "/counselors/",
+  peerCounsellors: "/peer-counselors/",
+  contact: "/contact/",
+  map: "/map",
+  news: "/news/",
+  createNews: "/news/create",
+  issues: "/issues/",
 };
 
 export const sidebarItems = [
@@ -27,7 +30,11 @@ export const sidebarItems = [
     to: APP_ROUTES.createContent,
     icon: "note_add",
   },
-
+  {
+    title: "News",
+    to: APP_ROUTES.news,
+    icon: "vertical_split",
+  },
   {
     title: "Consellors",
     to: APP_ROUTES.counsellors,
@@ -44,6 +51,7 @@ export const sidebarItems = [
     icon: "contact_page",
   },
   { title: "Location", to: APP_ROUTES.map, icon: "location_on" },
+  { title: "Issues", to: APP_ROUTES.issues, icon: "info" },
   {
     title: "Logout",
     to: APP_ROUTES.logout,

@@ -9,7 +9,6 @@ import Modal from "../../modal";
 import PageTitle from "../../pageTitle";
 import { DashboardContext } from "../../dashboard/index";
 import { snackBarClasses } from "../../snackar";
-import SkeletonWrapper from "../../skeleton/skeletonWrapper";
 import ContactSkeleton from "./contact.skeleton";
 
 function Contact() {
@@ -25,7 +24,7 @@ function Contact() {
   });
   React.useEffect(() => {
     const init = async () => {
-      const campusRes = await getCampuses(contact_);
+      const campusRes = await getCampuses();
       if (campusRes.campuses) {
         setCampuses(campusRes.campuses);
       }
@@ -58,7 +57,7 @@ function Contact() {
     let r = window.confirm(
       `Are you sure you want to delete contact - ${contact.name}`
     );
-    if (r == true) {
+    if (r === true) {
       const res = await deleteContacts(contact._id);
       if (res.contact) {
         const updatedContacts = contacts.filter(
@@ -94,13 +93,13 @@ function Contact() {
                       <span className="material-icons text-primary me-2">
                         phone
                       </span>
-                      <span>{contact.email}</span>
+                      <span>{contact.phone}</span>
                     </div>
                     <div className="d-flex align-items-center">
                       <span className="material-icons text-primary fs-3 me-2">
                         email
                       </span>
-                      <span>{contact.phone}</span>
+                      <span>{contact.email}</span>
                     </div>
                   </div>
                 </div>

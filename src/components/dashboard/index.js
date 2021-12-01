@@ -19,6 +19,8 @@ import SnackBar from "../snackar";
 import PageNotFound from "../pages/error/404";
 import Contact from "../pages/contact";
 import MapComponent from "../pages/maps";
+import News from "../pages/news";
+import CreateNews from "../pages/news/create";
 
 export const DashboardContext = React.createContext();
 
@@ -98,6 +100,8 @@ function ProtectedRoutes() {
             render={() => <PeerCounsellors />}
           />
           <Route exact path={APP_ROUTES.contact} render={() => <Contact />} />
+          <Route exact path={APP_ROUTES.news} render={() => <News />} />
+          <Route path={APP_ROUTES.createNews} render={() => <CreateNews />} />
           <Route path={APP_ROUTES.map} render={() => <MapComponent />} />
           <Route path="/*" render={() => <PageNotFound />} />
         </Switch>
