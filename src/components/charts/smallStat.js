@@ -98,7 +98,6 @@ function SmallStats({ label, value, data }) {
       chart.destroy();
     };
   });
-  const canvasHeight = 200;
   const canvaRef = useRef();
   return (
     <div className="card stats-small stats-small--1">

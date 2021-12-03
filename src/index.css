@@ -1,7 +1,8 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
-    "Droid Sans", "Helvetica Neue", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #f5f6f8;
@@ -9,7 +10,8 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
 }
 
 * {
@@ -26,8 +28,9 @@ code {
   --breakpoint-lg: 992px;
   --breakpoint-xl: 1200px;
   --dark-gray: #3d5170;
-  --bs-primary:#2dcb7e;
-  --bs-primary-rgb:45, 203, 126;
+  --bs-primary: #2dcb7e;
+  --bs-primary-rgb: 45, 203, 126;
+  --shadow: rgba(10, 19, 27, 0.2);
 }
 
 h1,
@@ -37,7 +40,8 @@ h4,
 h5,
 h6 {
   margin-bottom: 0.75rem;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
   font-weight: 400;
   color: var(--dark-gray);
 }
@@ -73,20 +77,38 @@ a {
   text-decoration: none;
 }
 .card {
+  position: relative;
   border: none;
   height: 100%;
-  box-shadow: rgba(10, 19, 27, 0.2) 0px 8px 24px;
+  box-shadow: var(--shadow) 0px 8px 24px;
+  overflow: hidden;
 }
 .card-header {
   background-color: transparent;
 }
-.btn-primary{
+.btn-primary {
   background-color: var(--primary);
-  border:2px solid var(--primary);
+  border: 2px solid var(--primary);
   outline: none;
 }
-.btn-primary:hover, .btn-primary:active,.btn-primary:focus{
-  border:2px solid var(--primary);
- background-color: transparent;
- color: var(--primary);
+.btn-primary:hover {
+  border: 2px solid var(--primary);
+  background-color: transparent;
+  color: var(--primary);
+}
+.fade-out {
+  animation: fadeOut 0.3s ease-out;
+}
+
+@keyframes fadeOut {
+  100% {
+    opacity: 0;
+  }
+}
+
+.text-primary{
+  color: var(--primary);
+}
+.table-container{
+  overflow-x: auto ;
 }
