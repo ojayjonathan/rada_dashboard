@@ -58,9 +58,9 @@ const Forum = () => {
     formData.append('title', selectedForum.title);
     formData.append("description", selectedForum.description);
     const res = await createForums(formData);
-    if (res.forums) {
+    if (res.forum) {
       showSnackBar(
-        res.forums.message || res.forums.msg,
+        res.forum.message || res.forum.msg||"forum created successfuly",
         snackBarClasses.success
       );
     } else {

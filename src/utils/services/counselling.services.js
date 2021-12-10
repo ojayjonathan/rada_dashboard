@@ -26,6 +26,7 @@ export const createForums = async (formData) => {
     method: "POST",
     headers: {
       "Content-Type": "multipart/form-data",
+
       Authorization: getAuthToken(),
     },
     body: formData,
@@ -134,3 +135,4 @@ export const deleteContacts = async (id) => {
     return { message: data.message, status: result.status };
   }
 };
+
