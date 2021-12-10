@@ -112,7 +112,7 @@ export default function ContentEditor() {
                   className="btn btn-primary ms-auto d-block"
                   style={{ fontSize: "13px" }}
                 >
-                  <i class="material-icons" style={{ fontSize: "13px" }}>
+                  <i className="material-icons" style={{ fontSize: "13px" }}>
                     file_copy
                   </i>
                   Publish

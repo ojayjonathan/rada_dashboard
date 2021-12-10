@@ -1,20 +1,20 @@
 export const APP_ROUTES = {
-  home: "/",
-  content: "/content/",
-  updateContent: "/content/update",
-  createContent: "/content/create/",
-  logout: "/logout/",
-  login: "/login/",
-  counsellors: "/counselors/",
-  peerCounsellors: "/peer-counselors/",
-  contact: "/contact/",
-  map: "/map",
-  news: "/news/",
-  createNews: "/news/create",
-  issues: "/issues/",
+  home: "/dashboard",
+  content: "/dashboard/content/",
+  updateContent: "/dashboard/content/update",
+  createContent: "/dashboard/content/create/",
+  logout: "/dashboard/logout/",
+  login: "/dashboard/login/",
+  counsellors: "/dashboard/counselors/",
+  peerCounsellors: "/dashboard/peer-counselors/",
+  contact: "/dashboard/contact/",
+  map: "/dashboard/map",
+  news: "/dashboard/news/",
+  createNews: "/dashboard/news/create",
+  issues: "/dashboard/issues/",
 };
 
-export const sidebarItems = [
+export const sidebarItems = [ 
   {
     title: "Home",
     to: APP_ROUTES.home,
@@ -67,3 +67,11 @@ export const USER_ROLES = {
 export const BASE_URL = "http://radaegerton.ddns.net/";
 export const ADMIN_URL = "http://radaegerton.ddns.net/api/v1/admin/";
 export const IMAGE_URL = `${BASE_URL}api/v1/uploads/`;
+
+
+export const Content = {
+  List: "0",
+  Img: "1",
+  Text: "2",
+  Title:"3"
+};

@@ -39,7 +39,7 @@ export default function Content() {
       subTitle: "",
       category: "Drug Abuse",
       content:
-        "<p class='text-muted'>Html Well, the way they make shows is, they make one show </p>",
+        "<p className='text-muted'>Html Well, the way they make shows is, they make one show </p>",
     },
   ];
 
