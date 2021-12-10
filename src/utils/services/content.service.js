@@ -58,3 +58,24 @@ export const createNewsItem = async (id) => {
     return { message: data.message, status: result.status };
   }
 };
+
+export const createContent = async (formData) => {
+  //TODO: update create content url
+  const result = await fetch(`${ADMIN_URL}news/`, {
+    method: "POST",
+    headers: {
+      Authorization: getAuthToken(),
+    },
+    body: formData,
+  }).catch((e) => {
+    return e;
+  });
+  const data = await result.json();
+  if (result.ok) {
+    return {
+      news: data.news,
+    };
+  } else {
+    return { message: data.message, status: result.status };
+  }
+};

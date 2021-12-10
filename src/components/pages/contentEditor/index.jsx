@@ -1,5 +1,6 @@
 import React from "react";
 import { Content } from "../../../utils/constants";
+import { createContent } from "../../../utils/services/content.service";
 import InputBox from "../../DefaultContentInputs/InputBox";
 import TypeSelection from "../../DefaultContentInputs/TypeSelection";
 import PageTitle from "../../pageTitle";
@@ -26,14 +27,17 @@ function ContentEditor() {
       [e.target.name]: e.target.value,
     });
   };
-
+  const saveMetaData = (metadata) => {
+    editor.current.metadata = metadata;
+    console.log(editor.current.metadata);
+  };
   return (
     <div className="container  ">
       <PageTitle title="New Content" sutitle="content Editor" />
       <div>
         <div className="row align-items-start ">
           <div className="col-12 col-lg-6  py-3">
-            <ContentMetaData />
+            <ContentMetaData saveMetaData={saveMetaData} />
             <EditorElement
               content={content}
               setType={setType}
@@ -50,21 +54,26 @@ function ContentEditor() {
               <PreviewContent content={previewContent} />
               <div className=" d-flex">
                 <button
-                onClick={()=>document.getElementById('content').scrollIntoView({
-                  behavior:"smooth",block:"start"
-                })}
+                  onClick={() =>
+                    document.getElementById("content").scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                    })
+                  }
                   type="submit"
                   className="btn btn-primary d-block mx-3 mb-3 w-50"
                 >
                   Continue
                 </button>
                 <button
+                  onClick={() =>
+                    createContent(editor.current.generateFormData())
+                  }
                   type="submit"
                   className="btn btn-primary d-block mx-3 mb-3 w-50"
                 >
-                  Save 
+                  Save
                 </button>
-
               </div>
             </div>
           </div>
@@ -113,7 +122,7 @@ function EditorElement({
             title: "",
             bodyContent: "",
             type: Content.Text,
-          });cl
+          });
           setType(Content.Text);
         }}
       >
@@ -169,7 +178,6 @@ function PreviewContent({ content }) {
       );
     }
     if (cell.type === Content.Img) {
-      console.log("-------file---", cell.bodyContent[0]);
       const url = window.URL.createObjectURL(cell.bodyContent[0]);
       console.log(url);
       return (
@@ -187,10 +195,24 @@ function PreviewContent({ content }) {
   return <div className="card-body">{data}</div>;
 }
 
-function ContentMetaData(params) {
+function ContentMetaData({ saveMetaData }) {
+  const [metadata, setMetadata] = React.useState({
+    title: "",
+    category: "",
+    thumbnail: "",
+  });
+  const change = (e) => {
+    setMetadata({ ...metadata, [e.target.name]: e.target.value });
+  };
   return (
     <div className="card">
-      <form className="p-3 card-body">
+      <form
+        className="p-3 card-body"
+        onSubmit={(e_) => {
+          e_.preventDefault();
+          saveMetaData(metadata);
+        }}
+      >
         <div className="page-header mt-5">
           <span className="page-subtitle">Meta Data</span>
         </div>
@@ -202,8 +224,10 @@ function ContentMetaData(params) {
             type="category"
             className="form-control"
             id="Category"
-            name="Category"
+            name="category"
             aria-describedby="Category"
+            required
+            onChange={change}
           />
         </div>
 
@@ -216,6 +240,7 @@ function ContentMetaData(params) {
             className="form-control"
             id="title"
             name="title"
+            onChange={change}
             aria-describedby="title"
           />
         </div>
@@ -229,7 +254,10 @@ function ContentMetaData(params) {
             required="true"
             className="form-control"
             id="thumbNail"
-            name="thumbNail"
+            name="thumbnail"
+            onChange={(e) => {
+              setMetadata({ ...metadata, thumbnail: e.target.files[0] });
+            }}
             aria-describedby="thumbNail"
           />
         </div>
