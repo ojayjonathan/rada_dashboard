@@ -25,7 +25,7 @@ export const createForums = async (formData) => {
   const result = await fetch(`${BASE_URL}rada/api/v1/counseling/forum`, {
     method: "POST",
     headers: {
-      // "Content-Type": "application/json;charset=utf-8",
+      "Content-Type": "multipart/form-data",
       Authorization: getAuthToken(),
     },
     body: formData,

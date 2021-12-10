@@ -47,17 +47,16 @@ const Forum = () => {
     setEdit(true);
     setSelectedForum(forum);
   };
-  const handleSubmit = async (e) => {
+  const addForum = async (e) => {
     e.preventDefault();
     setEdit(false);
-    const files = fileRef.current.files;
+
     const formData = new FormData();
-    formData.append("image", files[0]);
-    for (const key in selectedForum) {
-      if (Object.hasOwnProperty.call(selectedForum, key)) {
-        formData.append(key, selectedForum[key]);
-      }
+    if (selectedForum.file) {
+      formData.append("image", selectedForum.file, selectedForum.file.name);
     }
+    formData.append('title', selectedForum.title);
+    formData.append("description", selectedForum.description);
     const res = await createForums(formData);
     if (res.forums) {
       showSnackBar(
@@ -74,73 +73,81 @@ const Forum = () => {
   const fileRef = React.useRef();
   return (
     <ForumContext.Provider value={{ edit }}>
-        {isLoading ? (
-          <ForumSkeleton />
-        ) : (
-          <Card title="Forums">
-            {forums.map((forum, i) => (
-              <ForumItem item={forum} key={i} />
-            ))}
-            <div>
-              <button
-                onClick={() => setEdit(true)}
-                className="btn btn-primary fs-6 py-1"
-              >
-                Add New
-              </button>
+      {isLoading ? (
+        <ForumSkeleton />
+      ) : (
+        <Card title="Forums">
+          {forums.map((forum, i) => (
+            <ForumItem item={forum} key={i} />
+          ))}
+          <div>
+            <button
+              onClick={() => setEdit(true)}
+              className="btn btn-primary fs-6 py-1"
+            >
+              Add New
+            </button>
+          </div>
+        </Card>
+      )}
+      {isEditing && (
+        <Modal
+          title="Create Forum"
+          closeModal={() => setEdit(false)}
+          confirm={addForum}
+        >
+          <form onSubmit={addForum}>
+            <div className="mb-3">
+              <label htmlFor="name" className="form-label">
+                Forum Name
+              </label>
+              <input
+                onChange={handleChange}
+                type="text"
+                className="form-control"
+                id="title"
+                value={selectedForum.title}
+                placeholder="forum name"
+                name="title"
+                required
+              />
             </div>
-          </Card>
-        )}
-        {isEditing && (
-          <Modal
-            title="Create Forum"
-            closeModal={() => setEdit(false)}
-            confirm={handleSubmit}
-          >
-            <form onSubmit={handleSubmit}>
-              <div className="mb-3">
-                <label htmlFor="name" className="form-label">
-                  Forum Name
-                </label>
-                <input
-                  onChange={handleChange}
-                  type="text"
-                  className="form-control"
-                  id="title"
-                  value={selectedForum.title}
-                  placeholder="forum name"
-                  name="title"
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="description" className="form-label">
-                  Description
-                </label>
-                <textarea
-                  onChange={handleChange}
-                  name="description"
-                  value={selectedForum.description}
-                  className="form-control"
-                  id="description"
-                  rows="3"
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="file" className="form-label">
-                  Photo
-                </label>
-                <input
-                  ref={fileRef}
-                  type="file"
-                  className="form-control"
-                  id="file"
-                  name="image"
-                  placeholder="forum name"
-                />
-              </div>
-            </form>
-          </Modal>
-        )}
+            <div className="mb-3">
+              <label htmlFor="description" className="form-label">
+                Description
+              </label>
+              <textarea
+                onChange={handleChange}
+                name="description"
+                value={selectedForum.description}
+                className="form-control"
+                id="description"
+                rows="3"
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="file" className="form-label">
+                Photo
+              </label>
+              <input
+                onChange={(e) =>
+                  setSelectedForum({
+                    ...selectedForum,
+                    file: e.target.files[0],
+                  })
+                }
+                type="file"
+                className="form-control"
+                id="file"
+                name="image"
+                placeholder="forum name"
+                required
+              />
+            </div>
+          </form>
+        </Modal>
+      )}
     </ForumContext.Provider>
   );
 };

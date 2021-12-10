@@ -113,10 +113,7 @@ const AddCounsellorCard = ({ setShowModal, campuses }) => {
       true
     );
     if (result.counsellor) {
-      showSnackBar({
-        message: result.counsellor.msg,
-        className: snackBarClasses.primary,
-      });
+      showSnackBar(result.counsellor.msg, snackBarClasses.primary);
     } else {
       showSnackBar(result.message, snackBarClasses.danger);
     }

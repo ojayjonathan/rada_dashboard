@@ -64,6 +64,8 @@ export const createContent = async (formData) => {
   const result = await fetch(`${ADMIN_URL}news/`, {
     method: "POST",
     headers: {
+      // "Content-Type": "multipart/form-data",
+      "Content-Type": "application/json; charset=utf-8",
       Authorization: getAuthToken(),
     },
     body: formData,

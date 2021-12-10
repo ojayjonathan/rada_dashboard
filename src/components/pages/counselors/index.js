@@ -124,11 +124,12 @@ const AddCounsellorCard = ({ setShowModal, campuses }) => {
       campusRef_.current.value,
       expertiseRef_.current.value
     );
+    
     if (result.counsellor) {
-      showSnackBar({
-        message: result.counsellor.msg,
-        className: snackBarClasses.primary,
-      });
+      showSnackBar(
+        result.counsellor.msg,
+        snackBarClasses.primary,
+      );
     } else {
       showSnackBar(result.message, snackBarClasses.danger);
     }
