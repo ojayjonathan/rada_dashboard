@@ -61,17 +61,17 @@ export const createNewsItem = async (id) => {
 
 export const createContent = async (formData) => {
   //TODO: update create content url
-  const result = await fetch(`${ADMIN_URL}news/`, {
+  const result = await fetch(`http://192.168.8.101:4040/api/v1/admin/content`, {
     method: "POST",
     headers: {
-      // "Content-Type": "multipart/form-data",
-      "Content-Type": "application/json; charset=utf-8",
+      'Content-Type':'multipart/form-data',
       Authorization: getAuthToken(),
     },
     body: formData,
   }).catch((e) => {
     return e;
   });
+  console.log(formData);
   const data = await result.json();
   if (result.ok) {
     return {

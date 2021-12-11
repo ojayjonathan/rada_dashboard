@@ -65,7 +65,7 @@ export const USER_ROLES = {
 };
 
 export const BASE_URL = "http://radaegerton.ddns.net/";
-export const ADMIN_URL = "http://radaegerton.ddns.net/api/v1/admin/";
+export const ADMIN_URL = "'http://192.168.8.101:4040/api/v1/admin/";
 export const IMAGE_URL = `${BASE_URL}api/v1/uploads/`;
 
 

@@ -37,21 +37,22 @@ export class Editor {
       }
       return _content;
     });
-    //add content body to form
-    form.append("content", JSON.stringify(this.content));
-    //add title and category to form
     let _metadata = {
       title: this.metadata.title,
       category: this.metadata.category,
     };
-    form.append("metadata", JSON.stringify(_metadata));
-
-    //add thumbnail to form
-    form.append(
-      "thumbnail",
-      this.metadata.thumbnail,
-      this.metadata.thumbnail.name
+    console.log(
+      "----gdjhdhf----",
+      JSON.stringify({
+        content: this.content,
+        metadata: _metadata,
+      })
     );
+    form.append("data", {
+      content: this.content,
+      metadata: _metadata,
+    });
+
     return form;
   }
 }
