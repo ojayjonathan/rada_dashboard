@@ -10,6 +10,11 @@ export class Editor {
    *
    * @param {title:String,bodyContent: String,type: String } data
    */
+  isEditorValid() {
+    if (this.content.length == 0 || !this.metadata.thumbnail) return false;
+    if (!this.metadata.thumbnail) return false;
+    if (!this.metadata.title) return false;
+  }
   appendData(data) {
     if (data.type === Content.List) {
       const listContent = data.bodyContent.trim().split("\n");
@@ -48,11 +53,18 @@ export class Editor {
         metadata: _metadata,
       })
     );
-    form.append("data", {
-      content: this.content,
-      metadata: _metadata,
-    });
-
+    form.append(
+      "data",
+      JSON.stringify({
+        content: this.content,
+        metadata: _metadata,
+      })
+    );
+    form.append(
+      "thumbnail",
+      this.metadata.thumbnail,
+      this.metadata.thumbnail.name
+    );
     return form;
   }
 }

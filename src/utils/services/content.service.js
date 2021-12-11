@@ -60,24 +60,32 @@ export const createNewsItem = async (id) => {
 };
 
 export const createContent = async (formData) => {
+  const _request = new XMLHttpRequest();
+  _request.open("POST", `http://192.168.8.101:4040/api/v1/admin/content`);
+  _request.setRequestHeader("Authorization", getAuthToken());
+  _request.send(formData);
+  _request.onload = (_) => {
+    console.log(_request.response);
+  };
+  return {};
   //TODO: update create content url
-  const result = await fetch(`http://192.168.8.101:4040/api/v1/admin/content`, {
-    method: "POST",
-    headers: {
-      'Content-Type':'multipart/form-data',
-      Authorization: getAuthToken(),
-    },
-    body: formData,
-  }).catch((e) => {
-    return e;
-  });
-  console.log(formData);
-  const data = await result.json();
-  if (result.ok) {
-    return {
-      news: data.news,
-    };
-  } else {
-    return { message: data.message, status: result.status };
-  }
+  // const result = await fetch(`http://192.168.8.101:4040/api/v1/admin/content`, {
+  //   method: "POST",
+  //   headers: {
+  //     'Content-Type':'multipart/form-data',
+  //     Authorization: getAuthToken(),
+  //   },
+  //   body: formData,
+  // }).catch((e) => {
+  //   return e;
+  // });
+  // console.log(formData);
+  // const data = await result.json();
+  // if (result.ok) {
+  //   return {
+  //     news: data.news,
+  //   };
+  // } else {
+  //   return { message: data.message, status: result.status };
+  // }
 };

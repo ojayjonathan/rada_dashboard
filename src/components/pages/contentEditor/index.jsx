@@ -15,7 +15,6 @@ function ContentEditor() {
   });
 
   const [content, setContent] = React.useState({
-    title: "",
     bodyContent: "",
     type: Content.Text,
   });
@@ -29,13 +28,12 @@ function ContentEditor() {
   };
   const saveMetaData = (metadata) => {
     editor.current.metadata = metadata;
-    console.log(editor.current.metadata);
   };
   return (
     <div className="container  ">
       <PageTitle title="New Content" sutitle="content Editor" />
       <div>
-        <div className="row align-items-start ">
+        <div className="d-flex align-items-start ">
           <div className="col-12 col-lg-6  py-3">
             <ContentMetaData saveMetaData={saveMetaData} />
             <EditorElement
@@ -48,9 +46,14 @@ function ContentEditor() {
               setPreviewContent={setPreviewContent}
             />
           </div>
-          <div className="col-12 col-lg-6  py-3 ">
-            <span className="page-subtitle">Preview</span>
+          <div
+            className="col-12 col-lg-6  py-3 px-3"
+            style={{ alignSelf: "stretch" }}
+          >
             <div className="card">
+              <span className="page-subtitle mx-auto py-2 d-block">
+                Preview
+              </span>
               <PreviewContent content={previewContent} />
               <div className=" d-flex">
                 <button
@@ -66,9 +69,11 @@ function ContentEditor() {
                   Continue
                 </button>
                 <button
-                  onClick={() =>
-                    createContent(editor.current.generateFormData())
-                  }
+                  onClick={() => {
+                    if (editor.current.isEditorValid()) {
+                      createContent(editor.current.generateFormData());
+                    }
+                  }}
                   type="submit"
                   className="btn btn-primary d-block mx-3 mb-3 w-50"
                 >
@@ -131,7 +136,7 @@ function EditorElement({
         </div>
         <InputBox
           type={Content.Title}
-          name={"title"}
+          name={"subTitle"}
           title={"title"}
           onChange={addContent}
         />
@@ -179,7 +184,6 @@ function PreviewContent({ content }) {
     }
     if (cell.type === Content.Img) {
       const url = window.URL.createObjectURL(cell.bodyContent[0]);
-      console.log(url);
       return (
         <div>
           <img
