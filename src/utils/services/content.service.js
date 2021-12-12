@@ -61,7 +61,7 @@ export const createNewsItem = async (id) => {
 
 export const createContent = async (formData) => {
   const _request = new XMLHttpRequest();
-  _request.open("POST", `http://192.168.8.101:4040/api/v1/admin/content`);
+  _request.open("POST", `${ADMIN_URL}content`);
   _request.setRequestHeader("Authorization", getAuthToken());
   _request.send(formData);
   _request.onload = (_) => {

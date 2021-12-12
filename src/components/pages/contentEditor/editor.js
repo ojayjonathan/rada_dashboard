@@ -14,6 +14,7 @@ export class Editor {
     if (this.content.length == 0 || !this.metadata.thumbnail) return false;
     if (!this.metadata.thumbnail) return false;
     if (!this.metadata.title) return false;
+    return true;
   }
   appendData(data) {
     if (data.type === Content.List) {
