@@ -72,6 +72,7 @@ function ContentEditor() {
                   onClick={() => {
                     if (editor.current.isEditorValid()) {
                       createContent(editor.current.generateFormData());
+
                     }
                   }}
                   type="submit"
@@ -124,7 +125,7 @@ function EditorElement({
           setPreviewContent(editor.generateFinalContent());
           //clear state
           setContent({
-            title: "",
+            subTitle: "",
             bodyContent: "",
             type: Content.Text,
           });
@@ -162,7 +163,7 @@ function PreviewContent({ content }) {
     if (Content.Text === cell.type) {
       return (
         <div key={index}>
-          {cell.title && <h4 className="mt-3">{cell.title}</h4>}
+          {cell.subTitle && <h4 className="mt-3">{cell.subTitle}</h4>}
           {cell.bodyContent && <div>{cell.bodyContent}</div>}
         </div>
       );
@@ -171,7 +172,7 @@ function PreviewContent({ content }) {
     if (cell.type === Content.List) {
       return (
         <ol className="list-group  list-group-flush list-group-numbered ">
-          {cell.title && <h4 className="mt-3">{cell.title}</h4>}
+          {cell.subTitle && <h4 className="mt-3">{cell.subTitle}</h4>}
           {cell.bodyContent.map((item, index) => {
             return (
               <li key={index} className="list-group-item">
