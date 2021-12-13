@@ -7,7 +7,7 @@ import {
   getuserProfile,
 } from "../../utils/services/user.services";
 import Content from "../pages/content";
-import ContentEditor from "../pages/contentEditor";
+import ContentEditor from "../pages/contentEditor/main";
 import Logout from "../pages/logout";
 import { useHistory } from "react-router";
 import { getuserRoles } from "../../utils/services/role.services";
@@ -70,11 +70,14 @@ function ProtectedRoutes() {
       duration: duration,
     });
   };
-
+  const setForums = (forums) => {
+    setState({ ...state, forums: forums });
+  };
   return (
     <DashboardContext.Provider
       value={{
         ...state,
+        setForums,
         showSnackBar,
       }}
     >

@@ -2,7 +2,10 @@ import React from "react";
 import Card from "../card";
 import Modal from "../modal/index";
 import { DashboardContext } from "../dashboard";
-import { createForums } from "../../utils/services/counselling.services";
+import {
+  createForums,
+  deleteForums,
+} from "../../utils/services/counselling.services";
 import { IMAGE_URL } from "../../utils/constants";
 import { snackBarClasses } from "../snackar";
 import ForumSkeleton from "./skeleton.forum";
@@ -10,7 +13,8 @@ import "./index.css";
 
 const ForumContext = React.createContext();
 function ForumItem({ item }) {
-  const { edit } = React.useContext(ForumContext);
+  const { edit, deleteForum } = React.useContext(ForumContext);
+
   return (
     <div
       style={{ lineHeight: "normal" }}
@@ -24,11 +28,17 @@ function ForumItem({ item }) {
         <small className="text-muted">{item.description}</small>
       </div>
       <div>
-        <span
+        {/* <span
           onClick={() => edit(item)}
           className="material-icons text-primary btn fs-3"
         >
-          edit
+          edit */}
+        {/* </span> */}
+        <span
+          onClick={() => deleteForum(item.id)}
+          className="material-icons text-danger btn fs-3"
+        >
+          delete
         </span>
       </div>
     </div>
@@ -36,7 +46,7 @@ function ForumItem({ item }) {
 }
 
 const Forum = () => {
-  const { isLoading, forums, showSnackBar } =
+  const { isLoading, forums, setForums, showSnackBar } =
     React.useContext(DashboardContext);
   const [isEditing, setEdit] = React.useState(false);
   const [selectedForum, setSelectedForum] = React.useState({
@@ -49,20 +59,21 @@ const Forum = () => {
   };
   const addForum = async (e) => {
     e.preventDefault();
-    setEdit(false);
 
     const formData = new FormData();
     if (selectedForum.file) {
       formData.append("image", selectedForum.file, selectedForum.file.name);
     }
-    formData.append('title', selectedForum.title);
+    formData.append("title", selectedForum.title);
     formData.append("description", selectedForum.description);
     const res = await createForums(formData);
     if (res.forum) {
       showSnackBar(
-        res.forum.message || res.forum.msg||"forum created successfuly",
+        res.forum.message || "forum created successfuly",
         snackBarClasses.success
       );
+      setForums([...forums, res.forum]);
+      setEdit(false);
     } else {
       showSnackBar(res.message, snackBarClasses.danger);
     }
@@ -70,9 +81,15 @@ const Forum = () => {
   const handleChange = (e) => {
     setSelectedForum({ ...selectedForum, [e.target.name]: e.target.value });
   };
+  const deleteForum_ = async (id) => {
+    const result = await deleteForums(id);
+    if (result.forum) {
+      setForums(forums.filter((forum) => forum.id != result.forum.id));
+    }
+  };
   const fileRef = React.useRef();
   return (
-    <ForumContext.Provider value={{ edit }}>
+    <ForumContext.Provider value={{ edit, deleteForum: deleteForum_ }}>
       {isLoading ? (
         <ForumSkeleton />
       ) : (

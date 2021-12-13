@@ -61,31 +61,74 @@ export const createNewsItem = async (id) => {
 
 export const createContent = async (formData) => {
   const _request = new XMLHttpRequest();
-  _request.open("POST", `http://192.168.8.101:4040/api/v1/admin/content`);
+  _request.open("POST", `${ADMIN_URL}content`);
+  _request.responseType = "json";
   _request.setRequestHeader("Authorization", getAuthToken());
   _request.send(formData);
-  _request.onload = (_) => {
-    console.log(_request.response);
+
+  return new Promise((resolve, reject) => {
+    _request.onload = (_) => {
+      console.log(_request.response);
+      resolve({
+        data: _request.response.content,
+      });
+    };
+    _request.onerror = () => {
+      resolve({
+        message: _request.response
+          ? _request.response.message
+          : "An error occured",
+      });
+    };
+  });
+};
+
+//Create co
+export const createContentCategory = async (name) => {
+  const _data = {
+    name: name,
   };
-  return {};
-  //TODO: update create content url
-  // const result = await fetch(`http://192.168.8.101:4040/api/v1/admin/content`, {
-  //   method: "POST",
-  //   headers: {
-  //     'Content-Type':'multipart/form-data',
-  //     Authorization: getAuthToken(),
-  //   },
-  //   body: formData,
-  // }).catch((e) => {
-  //   return e;
-  // });
-  // console.log(formData);
-  // const data = await result.json();
-  // if (result.ok) {
-  //   return {
-  //     news: data.news,
-  //   };
-  // } else {
-  //   return { message: data.message, status: result.status };
-  // }
+  const _request = new XMLHttpRequest();
+  // _request.open("POST", `http://192.168.8.102:4040/api/v1/admin/content/category`);
+  _request.open("POST", `${ADMIN_URL}content/category`);
+  _request.setRequestHeader("Authorization", getAuthToken());
+  _request.setRequestHeader("Content-Type", "application/json;charset=utf-8");
+  _request.responseType = "json";
+  _request.send(JSON.stringify(_data));
+  return new Promise((resolve, reject) => {
+    _request.onload = (_) => {
+      console.log(_request.response);
+      resolve({
+        data: _request.response.contentCategory,
+      });
+    };
+    _request.onerror = () => {
+      reject({
+        message: _request.response
+          ? _request.response.message
+          : "An error occured",
+      });
+    };
+  });
+};
+
+//Create co
+export const getContentCategories = async () => {
+  const result = await fetch(`${ADMIN_URL}content/category`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+      Authorization: getAuthToken(),
+    },
+  }).catch((e) => {
+    return e;
+  });
+  const data = await result.json();
+  if (result.ok) {
+    return {
+      data: data.contentCategories,
+    };
+  } else {
+    return { message: data.message, status: result.status };
+  }
 };

@@ -21,26 +21,52 @@ export const getForums = async () => {
   }
 };
 
-export const createForums = async (formData) => {
-  const result = await fetch(`${BASE_URL}rada/api/v1/counseling/forum`, {
-    method: "POST",
+export const deleteForums = async (id) => {
+  const result = await fetch(`${BASE_URL}rada/api/v1/counseling/${id}`, {
+    method: "DELETE",
     headers: {
-      "Content-Type": "multipart/form-data",
-
+      "Content-Type": "application/json;charset=utf-8",
       Authorization: getAuthToken(),
     },
-    body: formData,
   }).catch((e) => {
     return e;
   });
   const data = await result.json();
   if (result.ok) {
     return {
-      forums: data.data.payload,
+      forum: data.data.payload,
     };
   } else {
     return { message: data.message, status: result.status };
   }
+};
+export const createForums = async (formData) => {
+  const _request = new XMLHttpRequest();
+  _request.open("POST", `${BASE_URL}rada/api/v1/counseling/forum`);
+  _request.responseType = "json";
+  _request.setRequestHeader("Authorization", getAuthToken());
+  _request.send(formData);
+
+  return new Promise((resolve, reject) => {
+    _request.onload = (_) => {
+      if (_request.response.data) {
+        resolve({
+          forum: _request.response.data.payload,
+        });
+      } else {
+        resolve({
+          message: _request.response.message,
+        });
+      }
+    };
+    _request.onerror = () => {
+      resolve({
+        message: _request.response
+          ? _request.response.message
+          : "An error occured",
+      });
+    };
+  });
 };
 
 export const addCounsellor = async (
@@ -135,4 +161,3 @@ export const deleteContacts = async (id) => {
     return { message: data.message, status: result.status };
   }
 };
-
