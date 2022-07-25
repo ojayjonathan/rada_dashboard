@@ -11,7 +11,8 @@ import { getItemFromLocalStorage, storeToLocalstorage } from "../utils";
 export const login = async (credential: {
   password: string;
   email: string;
-}): Promise<{ success: boolean; response: ApplicationMessage }> => {
+}
+): Promise<{ success: boolean; response: ApplicationMessage }> => {
   const result = await fetch(ADMIN_URL + "user/login", {
     method: "POST",
     headers: {
@@ -129,5 +130,7 @@ export const getuserMetrics = async () => {
 };
 
 export const logout = () => {
-  localStorage.clear();
+  try {
+    localStorage.clear();
+  } catch {}
 };

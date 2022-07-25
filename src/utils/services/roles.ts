@@ -111,6 +111,7 @@ export const getCounsellors = async (): Promise<ApiResponse<Counsellor[]>> => {
   }).catch((e) => {
     return e;
   });
+  
   const data: ApiResponseData = await result.json?.();
   if (result.ok) {
     const counsellors = data!.counsellor;

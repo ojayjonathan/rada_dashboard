@@ -104,6 +104,10 @@ export type ContentMetadata = {
   thumbnail: any;
 };
 
+export type InformationContent = {
+  metadata: ContentMetadata;
+  content: DeltaOperation[];
+};
 export type Campus = {
   name: string;
   _id?: string | number;
@@ -134,4 +138,9 @@ export type SmallStatChartData = {
       fill: boolean;
     }
   ];
+};
+
+export type LoginData = {
+  password: string;
+  email: string;
 };
