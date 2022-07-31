@@ -1,6 +1,10 @@
-interface Props {
-  children: any;
+import { HtmlHTMLAttributes } from "react";
+
+interface Props extends HtmlHTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode;
   title: string;
+  
+
 }
 export default function Card({ children, title }: Props) {
   return (

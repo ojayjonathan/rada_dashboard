@@ -86,7 +86,7 @@ a {
 .card-header {
   background-color: transparent;
 }
-.btn-primary {
+/* .btn-primary {
   background-color: var(--primary);
   border: 2px solid var(--primary);
   outline: none;
@@ -95,7 +95,7 @@ a {
   border: 2px solid var(--primary);
   background-color: transparent;
   color: var(--primary);
-}
+} */
 .fade-out {
   animation: fadeOut 0.3s ease-out;
 }

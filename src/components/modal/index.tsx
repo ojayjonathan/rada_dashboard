@@ -4,12 +4,12 @@ interface Props {
   title: string;
   closeModal: () => void;
   confirm: () => void;
-  children?: JSX.Element|any;
+  children?: JSX.Element | any;
 }
 
 const Modal: React.FC<Props> = ({ title, children, closeModal, confirm }) => {
   return (
-    <div className="modal" style={{ display: "block" }}>
+    <div className="modal" style={{ display: "block", zIndex: "9000" }}>
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">

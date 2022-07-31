@@ -2,12 +2,12 @@ import React, { useEffect, useRef } from "react";
 import classNames from "classnames";
 import { Chart, registerables } from "chart.js";
 import "./index.css";
-import { SmallStatChartData } from "../../types/types";
+import { ChartData } from "../../types/types";
 Chart.register(...registerables);
 
 interface Props {
   value: string;
-  data?: SmallStatChartData;
+  data?: ChartData;
   label: string;
 }
 function SmallStats({ label, value, data }: Props) {
@@ -17,8 +17,8 @@ function SmallStats({ label, value, data }: Props) {
   if (data != null) {
     const datasets = data.datasets[0].data;
     const increase =
-      datasets[datasets.length - 1] - datasets[datasets.length - 2];
-    percentage = `${(increase / datasets[datasets.length - 2]) * 100}`;
+      +datasets[datasets.length - 1] - +datasets[datasets.length - 2];
+    percentage = `${(increase / +datasets[datasets.length - 2]) * 100}`;
     percentageClasses = classNames(
       "stats-small__percentage",
       `stats-small__percentage--${increase > 0 ? "increase" : "decrease"}`

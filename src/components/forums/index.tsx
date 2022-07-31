@@ -1,22 +1,14 @@
-import React from "react";
-import Card from "../card";
-import Modal from "../modal/index";
-import { DashboardContext } from "../dashboard";
-import { createForums, deleteForums } from "../../utils/services/counselling";
-import { IMAGE_URL } from "../../utils/constants";
+  import { APP_ROUTES, IMAGE_URL } from "../../utils/constants";
 import ForumSkeleton from "./skeleton.forum";
 import "./index.css";
 import { Group } from "../../types/types";
-
-interface ForumState {
-  edit: (forum: Group) => void;
-  deleteForum: (id: string) => any;
-}
-const ForumContext = React.createContext<Partial<ForumState>>({});
+import { useDeleteForum, useForums } from "../../rest/hooks/users";
+import { Link } from "react-router-dom";
+import Card from "../ui/card";
+import toast from "../../toast";
 
 function ForumItem({ item }: { item: Group }) {
-  const { deleteForum } = React.useContext(ForumContext);
-
+  const { mutate, isLoading } = useDeleteForum();
   return (
     <div
       style={{ lineHeight: "normal" }}
@@ -30,163 +22,40 @@ function ForumItem({ item }: { item: Group }) {
         <small className="text-muted">{item.description}</small>
       </div>
       <div>
-        {/* <span
-          onClick={() => edit(item)}
-          className="material-icons text-primary btn fs-3"
-        >
-          edit */}
-        {/* </span> */}
-        <span
-          onClick={() => deleteForum?.(item.id!?.toString())}
-          className="material-icons text-danger btn fs-3"
+        <i
+          onClick={() => !isLoading && mutate(item.id + "")}
+          className="text-danger fs-3 material-icons"
+          role="button"
         >
           delete
-        </span>
+        </i>
       </div>
     </div>
   );
 }
 
 const Forum = () => {
-  const {
-    isLoading,
-    forums = [],
-    setForums,
-    showSnackBar,
-  } = React.useContext(DashboardContext);
-  const [isEditing, setEdit] = React.useState(false);
-  const [forumEdit, setForumInEdit] = React.useState<{
-    file?: any;
-    title: string;
-    description?: string;
-    id?: string | number;
-  }>({
-    title: "",
-    description: "",
-  });
-  const edit = (forum: Group) => {
-    setEdit(true);
-    setForumInEdit({
-      description: forum.description,
-      title: forum.title,
-      id: forum.id,
-    });
-  };
-  const addForum = async (e?: any) => {
-    e?.preventDefault();
+  const { isLoading, data, error } = useForums();
+  if (error) {
+    toast.error({ message: error.message });
+  }
 
-    const formData = new FormData();
-    if (forumEdit.file) {
-      formData.append("image", forumEdit.file, forumEdit.file.name);
-    }
-    formData.append("title", forumEdit.title);
-    formData.append("description", forumEdit.description!);
-    const res = await createForums(formData);
-    if (res.ok) {
-      showSnackBar?.({
-        className: "success",
-        message: "forum created successfuly",
-      });
-      setForums?.([...(forums ?? []), res.response]);
-      setEdit(false);
-    } else {
-      showSnackBar?.({
-        className: "danger",
-        message: res.errorMessage.message,
-      });
-    }
-  };
-  const handleChange = (e: any) => {
-    setForumInEdit({ ...forumEdit, [e.target.name]: e.target.value });
-  };
-  const deleteForum_ = async (id: string) => {
-    const result = await deleteForums(id);
-    if (result.ok) {
-      setForums?.(forums!.filter((forum) => forum.id !== result.response.id));
-      showSnackBar?.({
-        className: "success",
-        message: "Forumn deleted",
-      });
-    } else {
-    }
-  };
+  if (isLoading) {
+    return <ForumSkeleton />;
+  }
   return (
-    <ForumContext.Provider value={{ edit, deleteForum: deleteForum_ }}>
-      {isLoading ? (
-        <ForumSkeleton />
-      ) : (
-        <Card title="Forums">
-          {forums.map((forum, i) => (
-            <ForumItem item={forum} key={i} />
-          ))}
-          <div>
-            <button
-              onClick={() => setEdit(true)}
-              className="btn btn-primary fs-6 py-1"
-            >
-              Add New
-            </button>
-          </div>
-        </Card>
-      )}
-      {isEditing && (
-        <Modal
-          title="Create Forum"
-          closeModal={() => setEdit(false)}
-          confirm={() => addForum()}
-        >
-          <form onSubmit={addForum}>
-            <div className="mb-3">
-              <label htmlFor="name" className="form-label">
-                Forum Name
-              </label>
-              <input
-                onChange={handleChange}
-                type="text"
-                className="form-control"
-                id="title"
-                value={forumEdit.title}
-                placeholder="forum name"
-                name="title"
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="description" className="form-label">
-                Description
-              </label>
-              <textarea
-                onChange={handleChange}
-                name="description"
-                value={forumEdit.description}
-                className="form-control"
-                id="description"
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="file" className="form-label">
-                Photo
-              </label>
-              <input
-                onChange={(e: any) =>
-                  setForumInEdit({
-                    ...forumEdit,
-                    file: e.target.files[0],
-                  })
-                }
-                type="file"
-                className="form-control"
-                id="file"
-                name="image"
-                placeholder="forum name"
-                required
-              />
-            </div>
-          </form>
-        </Modal>
-      )}
-    </ForumContext.Provider>
+    <Card title="Forums">
+      <div style={{ maxHeight: "400px", overflowY: "scroll" }}>
+        {data?.data.payload.map((forum, i) => (
+          <ForumItem item={forum} key={i} />
+        ))}
+      </div>
+      <div>
+        <Link to={APP_ROUTES.forumCreate} className="btn btn-primary py-1">
+          Create New
+        </Link>
+      </div>
+    </Card>
   );
 };
 

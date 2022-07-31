@@ -1,53 +1,31 @@
-import { Content, ContentMetadata, ContentType } from "../../../types/types";
+import { Content, ContentMetadata } from "../../../types/types";
 
-export class EditorData {
-  content: Content = [];
-
-  metadata: Partial<ContentMetadata> = {};
-  constructor(metadata: Partial<ContentMetadata> = {}, content:Content = []) {
-    this.content = content;
-    this.metadata = metadata;
-  }
-
- 
-  isEditorValid() {
-    if (this.content.length === 0 || !this.metadata.thumbnail) return false;
-    if (!this.metadata.thumbnail) return false;
-    if (!this.metadata.title) return false;
-    return true;
-  }
-  appendData(data: any) {
-    if (data.type === ContentType.List) {
-      const listContent = data.bodyContent.trim().split("\n");
-      this.content.push({ ...data, bodyContent: listContent });
-    } else {
-      this.content.push({ ...data, bodyContent: [data.bodyContent] });
+export const generateFormData = async ({
+  content,
+  metadata,
+  ...others
+}: {
+  content: Content;
+  metadata: ContentMetadata;
+  [key: string]: any;
+}) => {
+  const rand_ = () => {
+    let s = "";
+    const c = "FGHYJTGKUIILUKYTJXCVKBLUKLrft6OIUY";
+    for (let i = 0; i < 5; ++i) {
+      s += c[Math.floor(Math.random() * c.length)];
     }
-  }
+    return s;
+  };
 
-  generateFinalContent() {
-    return {
-      metadata: this.metadata,
-      content: this.content,
-    };
-  }
-  generateFormData = async () => {
-    const rand_ = () => {
-      let s = "";
-      const c = "FGHYJTGKUIILUKYTJXCVKBLUKLrft6OIUY";
-      for (let i = 0; i < 5; ++i) {
-        s += c[Math.floor(Math.random() * c.length)];
-      }
-      return s;
-    };
+  const form = new FormData();
+  let content_ = [];
 
-    const form = new FormData();
-    let content_ = [];
-
-    for (let i = 0; i < this.content.length; ++i) {
-      let _contentItem = this.content[i];
-      //Add all images to the form
-      if (_contentItem.insert.image) {
+  for (let i = 0; i < content.length; ++i) {
+    let _contentItem = content[i];
+    //Add all images to the form
+    if (_contentItem.insert.image) {
+      try {
         let blob: any;
         await fetch(_contentItem.insert.image)
           .then((res) => {
@@ -58,34 +36,37 @@ export class EditorData {
           });
 
         const file = new File([blob], `${rand_()}.jpg`, { type: blob.type });
-
         form.append(file.name, file, file.name);
         content_.push({
           insert: {
             image: file.name,
           },
         });
-      } else {
+      } catch (e) {
         content_.push(_contentItem);
       }
+    } else {
+      content_.push(_contentItem);
     }
-    let _metadata = {
-      title: this.metadata.title,
-      category: this.metadata.category,
-    };
-
-    form.append(
-      "data",
-      JSON.stringify({
-        content: content_,
-        metadata: _metadata,
-      })
-    );
-    form.append(
-      "thumbnail",
-      this.metadata.thumbnail,
-      this.metadata.thumbnail.name
-    );
-    return form;
+  }
+  let _metadata = {
+    title: metadata.title,
+    category: metadata.category,
   };
-}
+
+  form.append(
+    "data",
+    JSON.stringify({
+      content: content_,
+      metadata: _metadata,
+    })
+  );
+
+  if (metadata.thumbnail instanceof File) {
+    form.append("thumbnail", metadata.thumbnail, metadata.thumbnail.name);
+  }
+  for (const key in others) {
+    form.append(key, others[key]);
+  }
+  return form;
+};

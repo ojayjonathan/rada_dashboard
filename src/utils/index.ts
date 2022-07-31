@@ -1,3 +1,6 @@
+import { ChartData } from "../types/types";
+import { AUTH_TOKEN_KEY } from "./constants";
+
 export const getItemFromLocalStorage = (key: string): string | null => {
   try {
     return localStorage.getItem(key);
@@ -15,12 +18,19 @@ export const storeToLocalstorage = (key: string, value: any): boolean => {
   }
 };
 
-export const generateChartData = (
-  labels: string[] = [],
-  data: number[] | string[] = [],
-  backgroundColor?: string[]|string,
-  fill = false
-) => {
+export const generateChartData = ({
+  borderColor,
+  labels = [],
+  data = [],
+  backgroundColor,
+  fill = false,
+}: {
+  borderColor?: string;
+  labels: string[];
+  data: number[] | string[];
+  backgroundColor?: string[] | string;
+  fill?: boolean;
+}): ChartData => {
   const change = 0.6 / data.length;
   let opacity = 0.9;
   // generate background colors for piechart
@@ -38,7 +48,14 @@ export const generateChartData = (
         data: data,
         backgroundColor: backgroundColor,
         fill: fill,
+        borderColor: borderColor,
       },
     ],
   };
+};
+export const getAuthToken = (): string => {
+  return getItemFromLocalStorage(AUTH_TOKEN_KEY) ?? "";
+};
+export const logout = () => {
+  localStorage.clear();
 };

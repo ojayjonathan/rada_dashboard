@@ -1,7 +1,7 @@
 import classNames from "classnames";
-import MainSidebar from "../sidebar/sidebar";
 import { sidebarItems } from "../../utils/constants";
-export default function Layout({ children }: { children: any }) {
+import MainSidebar from "../ui/sidebar/sidebar";
+export default function Layout({ children }: { children: React.ReactNode }) {
   const layoutClassNames = classNames(
     "col-12",
     "main-content",

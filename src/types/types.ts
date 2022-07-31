@@ -38,38 +38,16 @@ export type Schedule = {
   };
 };
 
-export type ErrorMessage = {
-  status?: number;
-  message: string;
-};
-
-export type ApiResponse<T> =
-  | {
-      ok: true;
-      response: T;
-    }
-  | { ok: false; errorMessage: ErrorMessage };
-export type ApiResponseData = {
-  [key: string]: any;
-} | null;
-
-export const enum MessageType {
-  Error = "danger",
-  Warning = "warning",
-  Info = "infor",
-  Success = "success",
-}
-export type ApplicationMessage = {
-  type: MessageType;
-  message: string;
-};
-
 export const enum UserRoles {
   Admin = "ADMIN",
   Counsellor = "COUNSELLOR",
   Unkwon = "UNKOWN",
 }
 
+export type Role = {
+  name: UserRoles;
+  _id: string | number;
+};
 export const enum ContentType {
   List = "0",
   Img = "1",
@@ -107,6 +85,7 @@ export type ContentMetadata = {
 export type InformationContent = {
   metadata: ContentMetadata;
   content: DeltaOperation[];
+  _id?: string | number;
 };
 export type Campus = {
   name: string;
@@ -119,22 +98,13 @@ export type News = {
   title: string;
 };
 
-export type PieChartData = {
+export type ChartData = {
   labels: string[];
   datasets: [
     {
-      data: number[];
-      backgroundColor: string[] | string;
-    }
-  ];
-};
-export type SmallStatChartData = {
-  labels: string[];
-  datasets: [
-    {
-      backgroundColor: string;
-      borderColor: string;
-      data: number[];
+      backgroundColor: string | string[];
+      borderColor?: string;
+      data: number[] | string[];
       fill: boolean;
     }
   ];
@@ -143,4 +113,10 @@ export type SmallStatChartData = {
 export type LoginData = {
   password: string;
   email: string;
+};
+
+export type Error = {
+  message: string;
+  data?: any;
+  status: number;
 };

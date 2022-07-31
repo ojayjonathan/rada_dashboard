@@ -1,4 +1,6 @@
 .main-sidebar {
+  overflow-y: auto;
+  overflow-x: hidden;
   top: 0;
   position: fixed;
   height: 100%;
@@ -20,8 +22,7 @@
 }
 
 .main-sidebar .nav-wrapper {
-  overflow-y: auto;
-  overflow-x: hidden;
+  
   height: calc(100vh - 3.75rem - 1px);
   margin-left: 1rem;
 }
@@ -78,7 +79,6 @@
   left: 0;
   width: 100%;
   background-color: #fff;
-  /* display: none; */
   z-index: 9999;
   padding-top: 5px;
   padding-bottom: 5px;

@@ -15,6 +15,9 @@ export const APP_ROUTES = {
   createNews: "/dashboard/news/create",
   issues: "/dashboard/issues/",
   error: "/dashboard/error/",
+  forum: "/dashboard/forumn/",
+  forumCreate: "/dashboard/forumn/create",
+  forumEdit: "/dashboard/forumn/",
 };
 
 export const sidebarItems: SideBarItem[] = [
@@ -62,11 +65,8 @@ export const sidebarItems: SideBarItem[] = [
   },
 ];
 
-export const USER_ROLES = {
-  admin: "ADMIN",
-  counsellor: "COUNSELLOR",
-};
-
+export const AUTH_TOKEN_KEY = "AUTH_TOKEN"
+export const USER_KEY = "USER"
 export const BASE_URL = "https://radaegerton.ddns.net/";
 export const ADMIN_URL = "https://radaegerton.ddns.net/api/v1/admin/";
 export const IMAGE_URL = `${BASE_URL}api/v1/uploads/`;

@@ -3,7 +3,7 @@ import SkeletonWrapper from "../../skeleton/skeletonWrapper";
 
 function NewsSkeleton() {
   return (
-    <div className="col-12 col-md-6 col-lg-4 mb-3  position-relative">
+    <div className=" position-relative">
       <SkeletonWrapper>
         <div className="card mx-2">
           <div

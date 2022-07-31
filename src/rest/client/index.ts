@@ -1,4 +1,5 @@
 import {
+  Campus,
   ContactInfo,
   ContentCategory,
   Counsellor,
@@ -13,27 +14,26 @@ import {
 import API_ENDPOINTS from "./api-endpoints";
 import HttpClient from "./http-client";
 import {
-  CampusEndpointData,
   CED,
   LoginPayload,
   Payload,
   CounsellorAdd,
   UserRolePayload,
-  CE,
+  UserMetrics,
+  Data,
+  NewsData,
+  ItemUpdate,
 } from "./types";
-const FORM_HEADERS = {
-  headers: { "Content-Type": "multipart/form-data" },
-};
-
+const FORM_HEADERS = { "Content-Type": "multipart/form-data" };
 class Client {
   users = {
     login: (data: LoginData) =>
       HttpClient.post<LoginPayload>(API_ENDPOINTS.LOGIN, data),
-    profile: () => HttpClient.get<User>(API_ENDPOINTS.PROFILE),
-    queryUser: (email: string) =>
-      HttpClient.get<User>(API_ENDPOINTS.QUERY_USER_INFO + email),
-    userMetrics: () => HttpClient.get<User>(API_ENDPOINTS.METRICS),
-    userRole: (uid: string) =>
+    profile: () => HttpClient.get<{ user: User }>(API_ENDPOINTS.PROFILE),
+    query: (email: string) =>
+      HttpClient.get<{ user: User }>(API_ENDPOINTS.QUERY_USER_INFO + email),
+    metrics: () => HttpClient.get<UserMetrics>(API_ENDPOINTS.METRICS),
+    role: (uid: string) =>
       HttpClient.get<UserRolePayload>(API_ENDPOINTS.ROLES + uid),
   };
   counselling = {
@@ -51,24 +51,36 @@ class Client {
       HttpClient.put<Schedule[]>(API_ENDPOINTS.COUNSELLORS_SCHEDULE, {
         schedule,
       }),
-    forums: () => HttpClient.get<Payload<Group[]>>(API_ENDPOINTS.FORUMS),
+    forums: () => HttpClient.get<Data<Payload<Group[]>>>(API_ENDPOINTS.FORUMS),
     deleteForum: (fid: string) =>
-      HttpClient.delete<Payload<Group>>(API_ENDPOINTS.COUNSELING + fid),
+      HttpClient.delete<Data<Payload<Group>>>(API_ENDPOINTS.COUNSELING + fid),
     createForum: (data: FormData) =>
-      HttpClient.post<Payload<Group>>(API_ENDPOINTS.FORUM, data, {
-        headers: { "Content-Type": "multipart/form-data" },
+      HttpClient.post<Data<Payload<Group>>>(API_ENDPOINTS.FORUM, data, {
+        headers: FORM_HEADERS,
       }),
   };
   admin = {
-    campuses: () => HttpClient.get<CampusEndpointData>(API_ENDPOINTS.CAMPUSES),
-    contact: () => HttpClient.get<CE<ContactInfo>>(API_ENDPOINTS.CONTACT),
+    campuses: () =>
+      HttpClient.get<{
+        campuses: Campus[];
+      }>(API_ENDPOINTS.CAMPUSES),
+    contacts: () =>
+      HttpClient.get<{
+        contacts: ContactInfo[];
+      }>(API_ENDPOINTS.CONTACT),
     createContact: (data: ContactInfo) =>
-      HttpClient.post<CE<ContactInfo>>(API_ENDPOINTS.CONTACT, data),
+      HttpClient.post<{ contacts: ContactInfo }>(API_ENDPOINTS.CONTACT, data),
     deleteContact: (id: string) =>
-      HttpClient.delete<CE<ContactInfo>>(API_ENDPOINTS.CONTACT + id),
+      HttpClient.delete<{ contacts: ContactInfo }>(API_ENDPOINTS.CONTACT + id),
   };
   content = {
-    news: () => HttpClient.get<News[]>(API_ENDPOINTS.NEWS),
+    news: () => HttpClient.get<NewsData<News[]>>(API_ENDPOINTS.NEWS),
+    createNews: (data: FormData) =>
+      HttpClient.post<NewsData<News>>(API_ENDPOINTS.NEWS, data, {
+        headers: FORM_HEADERS,
+      }),
+    deleteNews: (id: string) =>
+      HttpClient.delete<NewsData<News>>(API_ENDPOINTS.NEWS + id),
     categories: () =>
       HttpClient.get<{ contentCategories: ContentCategory[] }>(
         API_ENDPOINTS.CONTENT_CATEGORY
@@ -84,16 +96,18 @@ class Client {
       HttpClient.post<{ content: InformationContent }>(
         API_ENDPOINTS.CONTENT,
         data,
-        FORM_HEADERS
+        { headers: FORM_HEADERS }
       ),
-    update: (data: FormData) =>
+    update: ({ data, id }: ItemUpdate<FormData>) =>
       HttpClient.put<{ content: InformationContent }>(
-        API_ENDPOINTS.CONTENT,
+        API_ENDPOINTS.CONTENT + id,
         data,
-        FORM_HEADERS
+        { headers: FORM_HEADERS }
       ),
     delete: (id: string | number) =>
-      HttpClient.delete<unknown>(API_ENDPOINTS.CONTENT + id),
+      HttpClient.delete<{ content: InformationContent }>(
+        API_ENDPOINTS.CONTENT + id
+      ),
   };
 }
 

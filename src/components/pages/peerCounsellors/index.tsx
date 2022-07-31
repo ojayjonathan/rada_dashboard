@@ -1,55 +1,44 @@
 import React from "react";
+import { useCampuses } from "../../../rest/hooks/admin";
 import {
-  Campus,
-  ErrorMessage,
-  PeerCounsellor,
-  User,
-  UserRoles,
-} from "../../../types/types";
-import { addCounsellor } from "../../../utils/services/counselling";
-import { getCampuses, getPeerCounsellors } from "../../../utils/services/roles";
-import { queryUser } from "../../../utils/services/user";
+  useAddPeerCounselor,
+  usePeerCounselors,
+} from "../../../rest/hooks/counselling";
+import { useQueryUserData } from "../../../rest/hooks/users";
+import { Campus, UserRoles } from "../../../types/types";
 import { DashboardContext } from "../../dashboard";
 import Modal from "../../modal";
-import PageTitle from "../../pageTitle";
+import Button from "../../ui/button";
+import PageTitle from "../../ui/pageTitle";
 import { UserCard } from "../counselors";
 
 function PeerCounsellors() {
-  const { roles, onPageLoadError } = React.useContext(DashboardContext);
-  const [PeerCounsellors, setPeerCounsellors] = React.useState<
-    PeerCounsellor[]
-  >([]);
-  const init = async () => {
-    const res = await getPeerCounsellors();
-    if (res.ok) {
-      setPeerCounsellors(res.response);
-    } else {
-      const error: ErrorMessage = res.errorMessage;
-      onPageLoadError?.({ message: error.message, status: error.status });
-    }
-    const campusRes = await getCampuses();
-    if (campusRes.ok) {
-      seCampuses(campusRes.response);
-    } else {
-      const error: ErrorMessage = campusRes.errorMessage;
-      onPageLoadError?.({ message: error.message, status: error.status });
-    }
-  };
-  React.useEffect(() => {
-    init();
-  });
   const [showModal, setShowModal] = React.useState(false);
-  const [campuses, seCampuses] = React.useState<Campus[]>([]);
-
+  const { roles, onPageLoadError } = React.useContext(DashboardContext);
+  const {
+    data: counsellors,
+    isLoading,
+    error: counselorsError,
+  } = usePeerCounselors();
+  const { data: campuses, error: campusError } = useCampuses();
+  if (campusError || counselorsError) {
+    onPageLoadError?.({
+      message: campusError?.message ?? counselorsError?.message,
+    });
+  }
   return (
     <div className="mx-2">
       <PageTitle title="Peer Counselors" subtitle="counsellors" />
       <div className="card py-5 px-3">
         <div className="table-container">
           <table className="table">
+            {isLoading && (
+              <thead>
+                <tr>Loading...</tr>
+              </thead>
+            )}
             <thead>
               <tr>
-                <th scope="col">id</th>
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
                 <th scope="col">Phone</th>
@@ -59,21 +48,19 @@ function PeerCounsellors() {
               </tr>
             </thead>
             <tbody>
-              {PeerCounsellors.map((counsellor) => (
+              {counsellors?.counsellors.map((counsellor) => (
                 <tr key={counsellor.peerCounsellorId}>
-                  <th scope="row">{counsellor.peerCounsellorId}</th>
                   <td>{counsellor.name}</td>
                   <td>{counsellor.email}</td>
                   <td>{counsellor.phone}</td>
                   <td>{counsellor.gender}</td>
                   <td>{counsellor.expertise}</td>
-                  {/* <td>{counsellor.rating}</td> */}
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        {roles?.includes(UserRoles.Admin) && (
+        {roles?.map((r) => r.name).includes(UserRoles.Admin) && (
           <div className="py-3">
             <button
               className="btn btn-primary d-flex align-items-center py-1"
@@ -86,7 +73,10 @@ function PeerCounsellors() {
         )}
       </div>
       {showModal && (
-        <AddCounsellorCard campuses={campuses} setShowModal={setShowModal} />
+        <AddCounsellorCard
+          campuses={campuses?.campuses ?? []}
+          setShowModal={setShowModal}
+        />
       )}
     </div>
   );
@@ -98,47 +88,28 @@ type AddCounsellorProps = {
   campuses: Campus[];
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
-
 const AddCounsellorCard = ({ setShowModal, campuses }: AddCounsellorProps) => {
-  const { showSnackBar } = React.useContext(DashboardContext);
-  const [error, setError] = React.useState<string | null>(null);
-  const [user, setUser] = React.useState<Partial<User>>();
+  const {
+    mutate: query,
+    data: user,
+    isLoading: isMakingQuery,
+  } = useQueryUserData();
+  const { mutate: addCounsellor, isLoading: isAdding } = useAddPeerCounselor();
   const queryUserByEmail = async () => {
     const email = emailRef.current!.value;
     if (email) {
-      setError(null);
-      const res = await queryUser(email);
-      if (res.ok) {
-        setUser(res.response);
-      } else {
-        setError(res.errorMessage.message);
-      }
-    } else {
-      setError("Email is required");
+      query(email);
     }
   };
-  const emailRef = React.useRef<HTMLInputElement | null>(null);
-  const campusRef_ = React.useRef<HTMLSelectElement | null>(null);
-  const expertiseRef_ = React.useRef<HTMLInputElement | null>(null);
+  const emailRef = React.useRef<HTMLInputElement>(null);
+  const campusRef_ = React.useRef<HTMLSelectElement>(null);
+  const expertiseRef_ = React.useRef<HTMLInputElement>(null);
   const handleAdd = async () => {
-    const result = await addCounsellor(
-      user!._id!,
-      campusRef_.current!.value,
-      expertiseRef_.current!.value
-    );
-    if (result.ok) {
-      showSnackBar?.({
-        className: "success",
-        message: "Counsellor added successfuly",
-      });
-    } else {
-      showSnackBar?.({
-        className: "danger",
-        message: result.errorMessage.message,
-      });
-    }
-    setShowModal(false);
-    setUser({});
+    addCounsellor({
+      user_id: user!.user!._id + "",
+      campus_id: campusRef_.current!.value,
+      expertise: expertiseRef_.current!.value,
+    });
   };
   return (
     <Modal
@@ -156,6 +127,7 @@ const AddCounsellorCard = ({ setShowModal, campuses }: AddCounsellorProps) => {
             required
           />
           <button
+            disabled={isMakingQuery}
             onClick={queryUserByEmail}
             className="btn btn-primary py-1 d-flex align-items-center"
           >
@@ -165,7 +137,7 @@ const AddCounsellorCard = ({ setShowModal, campuses }: AddCounsellorProps) => {
         </div>
         {user && (
           <div className="form-control">
-            <UserCard user={user} />
+            <UserCard user={user.user} />
             <select className="form-select mb-2" ref={campusRef_}>
               <option>Select Campus</option>
               {campuses.map((c: Campus) => (
@@ -180,18 +152,16 @@ const AddCounsellorCard = ({ setShowModal, campuses }: AddCounsellorProps) => {
               placeholder="Expertise"
               required
             />
-            <button
-              onClick={handleAdd}
+            <Button
+              label="add"
+              loading={isAdding}
+              buttonType="primary"
               className="mx-auto btn btn-primary py-1 d-flex align-items-center"
-            >
-              add
-              <span className="material-icons">add</span>
-            </button>
+              onClick={handleAdd}
+            />
           </div>
         )}
       </form>
-
-      {error && <small className="text-danger">{error}</small>}
     </Modal>
   );
 };

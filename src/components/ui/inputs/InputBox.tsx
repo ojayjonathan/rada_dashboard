@@ -1,5 +1,5 @@
 import React, { HtmlHTMLAttributes } from "react";
-import { ContentType } from "../../types/types";
+import { ContentType } from "../../../types/types";
 interface InputProps
   extends HtmlHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> {
   type: ContentType;

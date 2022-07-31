@@ -1,24 +1,32 @@
-import React from "react";
-import PageTitle from "../../pageTitle";
-import img from "../../../assets/images/image.webp";
 import "./index.css";
 import { Link } from "react-router-dom";
-import { APP_ROUTES } from "../../../utils/constants";
+import { APP_ROUTES, IMAGE_URL } from "../../../utils/constants";
+import PageTitle from "../../ui/pageTitle";
+import { useContent, useDeleteContent } from "../../../rest/hooks/content";
+import toast from "../../../toast";
+import { InformationContent } from "../../../types/types";
+import NewsSkeleton from "../news/news.skeleton";
+import { useQueryClient } from "@tanstack/react-query";
+import API_ENDPOINTS from "../../../rest/client/api-endpoints";
+import Button from "../../ui/button";
 
-const ContentCard = ({ item }: { item: { [key: string]: any } }) => {
-  const ref = React.useRef<HTMLParagraphElement | null>(null);
-  React.useEffect(() => {
-    ref.current!.innerHTML = item.content;
-  });
-  
+const ContentCard = ({ item }: { item: InformationContent }) => {
+  const { mutate: deleteContent, isLoading } = useDeleteContent();
   return (
     <div className="card">
-      <div className="content-image">
-        <img className="card-img-top" src={item.imageSrc} alt={item.category} />
-      </div>
+      <div
+        style={{
+          minHeight: "150px",
+          backgroundImage: `url(${IMAGE_URL + item.metadata.thumbnail})`,
+          backgroundSize: "cover",
+          maxHeight: "300px",
+          overflow: "hidden",
+        }}
+      ></div>
+
       <div className="card-body">
-        <span className="content-category">{item.category}</span>
-        <p className="text-muted" ref={ref}></p>
+        <span className="content-category">{item.metadata.title}</span>
+        <p className="text-muted"></p>
         <div>
           <Link
             to={{ pathname: APP_ROUTES.createContent }}
@@ -27,6 +35,14 @@ const ContentCard = ({ item }: { item: { [key: string]: any } }) => {
           >
             Edit
           </Link>
+          <Button
+            loading={isLoading}
+            label="Delete"
+            buttonType="danger"
+            disabled={isLoading}
+            onClick={() => deleteContent(item._id!)}
+            className="fs-6 py-1 px-4 ms-5"
+          />
         </div>
       </div>
     </div>
@@ -34,22 +50,37 @@ const ContentCard = ({ item }: { item: { [key: string]: any } }) => {
 };
 
 export default function Content() {
-  const blogItems = [
-    {
-      imageSrc: img,
-      title: "New Blog",
-      subTitle: "",
-      category: "Drug Abuse",
-      content:
-        "<p className='text-muted'>Html Well, the way they make shows is, they make one show </p>",
-    },
-  ];
+  const { data, isLoading, error } = useContent();
+  const query = useQueryClient();
+
+  if (error) {
+    toast.error({
+      message: error.message,
+      options: {
+        customButtons: [
+          {
+            label: "Retry",
+            onClick: () => query.invalidateQueries([API_ENDPOINTS.CONTENT]),
+          },
+        ],
+      },
+    });
+  }
 
   return (
     <div className="container">
       <PageTitle title="Content" subtitle="content" />
       <div className="row">
-        {blogItems.map((item, key) => (
+        {isLoading && (
+          <div className="row">
+            {[...Array(3)].map((_, key) => (
+              <div key={key} className="col-12 col-md-6 col-lg-4 mb-3 px-2">
+                <NewsSkeleton />
+              </div>
+            ))}
+          </div>
+        )}
+        {data?.content.map((item, key) => (
           <div key={key} className="col-12 col-md-6 col-lg-4 mb-3 px-2">
             <ContentCard item={item} />
           </div>

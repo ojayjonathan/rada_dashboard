@@ -1,5 +1,5 @@
 import { HtmlHTMLAttributes } from "react";
-import { ContentType } from "../../types/types";
+import { ContentType } from "../../../types/types";
 interface Props extends HtmlHTMLAttributes<HTMLSelectElement> {}
 
 function TypeSelection({ onChange }: Props) {

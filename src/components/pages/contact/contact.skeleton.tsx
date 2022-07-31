@@ -3,7 +3,7 @@ import SkeletonWrapper from "../../skeleton/skeletonWrapper";
 const ContactSkeleton = () => {
   return (
     <div
-      className="col-12 col-lg-6  mb-3 "
+      className=" mb-3 "
       style={{ height: "120px" }}
     >
       <div className="me-3 position-relative">

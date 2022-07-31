@@ -1,41 +1,30 @@
-import React from "react";
-import PageTitle from "../../pageTitle";
+import React, { FormEvent } from "react";
+import { useCreateNews } from "../../../rest/hooks/content";
+import Button from "../../ui/button";
+import PageTitle from "../../ui/pageTitle";
 
 function CreateNews() {
-  const [newsItem, setNewsItem] = React.useState({
-    title: "",
-    content: "",
-  });
-  const create = async (e: any) => {
+  const { mutate: create, isLoading, isSuccess } = useCreateNews();
+  const submit = (e: FormEvent) => {
     e.preventDefault();
-    const files = fileRef.current!.files!;
-    const formData = new FormData();
-    formData.append("image", files[0]);
-    formData.append("title", newsItem.title);
-    formData.append("content", newsItem.content);
-
-    //TODO - call create news api
+    create(new FormData(ref.current!));
   };
-  const fileRef = React.useRef<HTMLInputElement>(null);
-  const handleChange = (e: any) => {
-    setNewsItem({ ...newsItem, [e.target.name]: e.target.value });
-  };
+  const ref = React.useRef<HTMLFormElement | null>(null);
+  isSuccess && ref.current?.reset();
   return (
     <div className="mx-2">
       <PageTitle title="Create News" subtitle="News" />
-      <div className="card">
-        <form className="card-body container-md" onSubmit={create}>
+      <div  className="card">
+        <form ref={ref} className="card-body container-md" onSubmit={submit}>
           <input
-            value={newsItem.title}
             className="form-control my-3"
-            onChange={handleChange}
             placeholder="title"
             name="title"
+            required={true}
           />
           <textarea
-            value={newsItem.content}
+            required={true}
             className="form-control my-3"
-            onChange={handleChange}
             placeholder="write something..."
             name="content"
           ></textarea>
@@ -44,10 +33,20 @@ function CreateNews() {
               News Image
             </label>
             <input
-              ref={fileRef}
+              name="image"
               type="file"
               className="form-control"
               id="file"
+              required={true}
+            />
+          </div>
+          <div className="d-flex justify-content-center">
+            <Button
+              disabled={isLoading}
+              label="Submit"
+              loading={isLoading}
+              type="submit"
+              buttonType="primary"
             />
           </div>
         </form>

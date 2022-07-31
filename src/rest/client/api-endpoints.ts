@@ -1,7 +1,7 @@
 const API_ENDPOINTS = {
-  NEWS: "api/v1/admin/news",
-  CONTACT: "api/v1/admin/contact",
-  CONTENT: "api/v1/admin/content",
+  NEWS: "api/v1/admin/news/",
+  CONTACT: "api/v1/admin/contact/",
+  CONTENT: "api/v1/admin/content/",
   CONTENT_CATEGORY: "api/v1/admin/content/category",
   LOGIN: "api/v1/admin/user/login",
   PROFILE: "api/v1/admin/user/profile",
@@ -15,7 +15,7 @@ const API_ENDPOINTS = {
   COUNSELLORS_SCHEDULE: "api/v1/admin/user/counsellor/schedule",
   ROLES: "api/v1/admin/role/",
   FORUMS: "rada/api/v1/counseling/forums",
-  FORUM: "rada/api/v1/counseling/forumn/",
+  FORUM: "rada/api/v1/counseling/forum/",
   COUNSELING: "rada/api/v1/counseling/",
 };
 

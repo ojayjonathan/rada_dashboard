@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { Link } from "react-router-dom";
 import "./index.css";
 import { useLocation } from "react-router";
-import { SideBarItem } from "../../types/types";
+import { SideBarItem } from "../../../types/types";
 type Props = {
   item: SideBarItem;
   close: () => void;
@@ -33,7 +33,7 @@ export default function MainSidebar({ sideBarItems }: MainSidebarProps) {
     "col-lg-2",
     "col-md-3",
     sideBarOpen && "open",
-    "py-5"
+    "py-4"
   );
   return (
     <>
@@ -52,7 +52,7 @@ export default function MainSidebar({ sideBarItems }: MainSidebarProps) {
         <div className="nav-wrapper ml-4">
           <ul className="nav">
             <li className="text-center w-100 mb-3">
-              <h3 className="mt-2 mt-md-0">Rada Dashboard</h3>
+              <h4 className="mt-2 mt-md-0">Rada Dashboard</h4>
             </li>
             {sideBarItems.map((item, idx) => (
               <li key={idx} className="nav-item">

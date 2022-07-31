@@ -1,7 +1,7 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 import { APP_ROUTES } from "../../../utils/constants";
-import { logout } from "../../../utils/services/user";
+import { logout } from "../../../utils/index";
 
 function Logout() {
   logout();

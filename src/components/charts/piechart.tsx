@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from "react";
 import { Chart, registerables } from "chart.js";
 import CardSkeleton from "../skeleton/skeleton.chart";
-import { PieChartData } from "../../types/types";
+import { ChartData } from "../../types/types";
 Chart.register(...registerables);
-
 interface Props {
   title: string;
-  data?: PieChartData;
+  data: ChartData|null;
 }
+
 export default function PieChart({ data, title }: Props) {
   useEffect(() => {
     const config = {
@@ -29,6 +29,7 @@ export default function PieChart({ data, title }: Props) {
   }, [data]);
   const canvasHeight = 300;
   const canvaRef = useRef<HTMLCanvasElement | null>(null);
+  
   return (
     <div className="card">
       {!data && <CardSkeleton centerTitle={true} />}
