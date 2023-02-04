@@ -1,46 +1,27 @@
-# Getting Started with Create React App
+# Rada Egerton - Team Project (In Progress)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Introduction
 
-## Available Scripts
+Rada Egerton is a team project aimed at providing students with access to information and resources on sexual and reproductive health. With the Rada Egerton app, students can access professional or peer counselling services, as well as a helpline for emergencies.
 
-In the project directory, you can run:
+## Project Components
 
-### `npm start`
+Rada Egerton consists of a web server, an admin dashboard, and a mobile application. The web server provides a platform for the application to communicate with, while the mobile application is the user interface that makes accessing the services easy and user-friendly. The admin dashboard provides the tools necessary to manage the system, including system reports.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Technologies
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Server: Python (Django)
+- Mobile app: Flutter
+- Admin Dashboard: ReactJs
 
-### `npm test`
+## Role
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- UI Design
+- Development of the Admin Dashboard
+- Development of the Mobile Application
 
-### `npm run build`
+## Resources
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Source code: [Mobile App](https://github.com/omondibrian/Rada-Egerton)
+- Design files: [Figma]https://www.figma.com/proto/x4pVbMgO07MgB3dpxsCQyu/Untitled?node-id=26%3A85&starting-point-node-id=9%3A36&scaling=min-zoom)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
