@@ -23,5 +23,5 @@ Rada Egerton consists of a web server, an admin dashboard, and a mobile applicat
 ## Resources
 
 - Source code: [Mobile App](https://github.com/omondibrian/Rada-Egerton)
-- Design files: [Figma]https://www.figma.com/proto/x4pVbMgO07MgB3dpxsCQyu/Untitled?node-id=26%3A85&starting-point-node-id=9%3A36&scaling=min-zoom)
+- Design files: [Figma](https://www.figma.com/proto/x4pVbMgO07MgB3dpxsCQyu/Untitled?node-id=26%3A85&starting-point-node-id=9%3A36&scaling=min-zoom)
 
